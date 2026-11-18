@@ -1,0 +1,1430 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>创业领导力 · 核心自检</title>
+<style>
+:root{
+  --paper:#fbf9f4; --card:#fff; --ink:#241f19; --ink2:#57503f; --ink3:#958b7c;
+  --line:#e5ded0; --line2:#f0eadd;
+  --accent:#8a3a26; --teal:#2f5d57; --gold:#a8853c;
+  --s0:#8a3a26; --s1:#a2482c; --s2:#b5622f; --s3:#a8853c; --s4:#4a7a63; --s5:#2f5d57;
+  --sh:0 1px 2px rgba(60,45,20,.05), 0 8px 24px -18px rgba(60,45,20,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Noto Serif SC","Source Han Serif SC","Songti SC",Georgia,serif;
+  font-size:15px; line-height:1.75; -webkit-font-smoothing:antialiased;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+button{font-family:-apple-system,"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+
+/* ============ 顶栏 ============ */
+#top{
+  position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:16px;
+  padding:11px clamp(14px,4vw,34px);
+  background:rgba(251,249,244,.93);backdrop-filter:saturate(1.4) blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand{display:flex;align-items:baseline;gap:9px;flex:0 0 auto;min-width:0}
+.brand b{font-size:16px;letter-spacing:.02em;white-space:nowrap}
+.brand span{font-family:system-ui,sans-serif;font-size:11.5px;color:var(--ink3);letter-spacing:.06em;white-space:nowrap}
+.prog{flex:1 1 auto;display:flex;align-items:center;gap:10px;min-width:60px;max-width:300px}
+.prog .bar{flex:1;height:5px;background:#eee7d9;border-radius:3px;overflow:hidden}
+.prog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b5622f,#4a7a63);transition:width .35s ease}
+.prog em{font-family:system-ui,sans-serif;font-style:normal;font-size:12px;color:var(--ink3);letter-spacing:.04em;flex:0 0 auto}
+.tacts{display:flex;align-items:center;gap:7px;flex:0 0 auto}
+.tacts button{
+  font-size:12.5px;padding:6px 12px;border:1px solid var(--line);background:#fff;color:var(--ink2);
+  border-radius:3px;cursor:pointer;letter-spacing:.03em;white-space:nowrap;transition:.15s;
+}
+.tacts button:hover{border-color:var(--accent);color:var(--accent)}
+.tacts button.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.tacts button.primary:hover{background:#264c47;color:#fff}
+.saved{margin-right:3px;font-family:system-ui,sans-serif;font-size:11px;color:var(--ink3);letter-spacing:.05em;white-space:nowrap}
+
+/* ============ 屏幕切换 ============ */
+.screen{display:none}
+.screen.on{display:block;animation:fade .28s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* ============ 封面 ============ */
+#cover{padding:clamp(30px,7vw,72px) clamp(18px,5vw,40px) 80px}
+.cv{max-width:840px;margin:0 auto}
+.kicker{font-family:system-ui,sans-serif;font-size:11.5px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:18px}
+.cv h1{font-size:clamp(34px,7vw,52px);line-height:1.15;letter-spacing:-.02em}
+.cv h1 small{display:block;font-size:clamp(14px,2.6vw,17px);font-weight:400;color:var(--ink2);letter-spacing:.01em;margin-top:14px;line-height:1.7}
+.cv .quote{
+  margin:26px 0 30px;padding:16px 20px;border-left:3px solid var(--accent);background:#fff;
+  font-size:14.5px;color:var(--ink2);line-height:1.8;box-shadow:var(--sh);
+}
+.cv .quote b{color:var(--ink)}
+.cvbtns{display:flex;gap:11px;flex-wrap:wrap;margin-bottom:34px}
+.cvbtns button{
+  font-size:14.5px;padding:13px 30px;border-radius:3px;cursor:pointer;letter-spacing:.04em;
+  border:1px solid var(--line);background:#fff;color:var(--ink2);transition:.18s;
+}
+.cvbtns button:hover{border-color:var(--ink3)}
+.cvbtns button.big{background:var(--ink);border-color:var(--ink);color:#fbf9f4}
+.cvbtns button.big:hover{background:#3a3128}
+.cvbtns button.resume{background:#fff;border-color:var(--teal);color:var(--teal);font-weight:600}
+.cvbtns button.resume:hover{background:#f2f7f5}
+.dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:0 0 26px}
+.dgrid .dg{background:#fff;padding:13px 15px;display:flex;align-items:baseline;gap:9px}
+.dgrid .dg b{font-family:system-ui,sans-serif;font-size:10.5px;color:#fff;background:var(--ink2);width:17px;height:17px;line-height:17px;text-align:center;border-radius:2px;flex:0 0 auto;font-weight:700;align-self:center}
+.dgrid .dg span{font-size:13.5px;color:var(--ink)}
+.dgrid .dg i{font-family:system-ui,sans-serif;font-style:normal;font-size:11px;color:var(--ink3);margin-left:auto}
+.cells{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:26px}
+.cells>div{background:var(--paper);padding:18px 18px 20px}
+.cells h4{font-size:13.5px;margin-bottom:7px;color:var(--ink)}
+.cells p{font-size:12.8px;color:var(--ink2);line-height:1.75}
+.cv .foot{font-family:system-ui,sans-serif;font-size:11.5px;color:var(--ink3);letter-spacing:.04em;line-height:2}
+.cv .foot b{color:var(--ink2);font-weight:600}
+
+/* ============ 自检列表 ============ */
+#main{padding:clamp(22px,4vw,40px) clamp(14px,4vw,34px) 130px}
+.mw{max-width:880px;margin:0 auto}
+
+.dom{margin-bottom:34px;scroll-margin-top:70px}
+.dh{display:flex;align-items:baseline;gap:11px;padding-bottom:9px;border-bottom:1px solid var(--line);margin-bottom:14px;flex-wrap:wrap}
+.dh .dk{
+  font-family:system-ui,sans-serif;font-size:11px;font-weight:700;color:#fff;background:var(--ink2);
+  width:20px;height:20px;line-height:20px;text-align:center;border-radius:2px;flex:0 0 auto;align-self:center;
+}
+.dh h2{font-size:17.5px;letter-spacing:0}
+.dh .dc{font-family:system-ui,sans-serif;font-size:11.5px;color:var(--ink3);letter-spacing:.05em}
+.dh .dn{margin-left:auto;font-family:system-ui,sans-serif;font-size:11.5px;color:var(--ink3)}
+
+.card{
+  position:relative;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);
+  padding:15px 17px 14px;margin-bottom:11px;transition:border-color .2s,box-shadow .2s;
+}
+.card:hover{box-shadow:var(--sh)}
+.card[data-s="0"]{border-left-color:var(--s0)}
+.card[data-s="1"]{border-left-color:var(--s1)}
+.card[data-s="2"]{border-left-color:var(--s2)}
+.card[data-s="3"]{border-left-color:var(--s3)}
+.card[data-s="4"]{border-left-color:var(--s4)}
+.card[data-s="5"]{border-left-color:var(--s5)}
+
+.ch{display:flex;align-items:center;gap:9px;margin-bottom:8px;flex-wrap:wrap}
+.cid{font-family:system-ui,sans-serif;font-size:10.5px;letter-spacing:.08em;color:var(--ink3);font-weight:600}
+.card h3{font-size:15px;letter-spacing:0}
+.csrc{font-family:system-ui,sans-serif;font-size:10.5px;color:var(--ink3);letter-spacing:.03em}
+.why{
+  margin-left:auto;width:23px;height:23px;line-height:1;border-radius:50%;border:1px solid var(--line);
+  background:#fff;color:var(--ink3);font-size:12.5px;font-weight:600;cursor:pointer;flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;transition:.16s;padding:0;
+}
+.why:hover{border-color:var(--teal);color:var(--teal);background:#f2f7f5}
+.why.seen{border-color:#cfd9d1;color:var(--teal)}
+
+.cq{font-size:14.5px;line-height:1.72;color:var(--ink);margin-bottom:12px;text-wrap:pretty}
+
+.cr{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.scale{display:flex;gap:4px}
+.scale button{
+  width:34px;height:32px;border:1px solid var(--line);background:#fff;color:#a49a8c;
+  font-size:13px;cursor:pointer;border-radius:3px;transition:.13s;padding:0;
+  font-variant-numeric:tabular-nums;
+}
+.scale button:hover{border-color:var(--accent);color:var(--accent);background:#fdfaf7}
+.scale button.on{color:#fff;border-color:transparent;font-weight:600}
+.scale button.on[data-v="0"]{background:var(--s0)}
+.scale button.on[data-v="1"]{background:var(--s1)}
+.scale button.on[data-v="2"]{background:var(--s2)}
+.scale button.on[data-v="3"]{background:var(--s3)}
+.scale button.on[data-v="4"]{background:var(--s4)}
+.scale button.on[data-v="5"]{background:var(--s5)}
+.cval{font-family:system-ui,sans-serif;font-size:11.5px;color:var(--ink3);letter-spacing:.04em}
+.skip{
+  margin-left:auto;font-family:system-ui,sans-serif;font-size:11px;color:var(--ink3);
+  border:none;background:none;cursor:pointer;letter-spacing:.04em;padding:4px 2px;text-decoration:underline;
+  text-decoration-color:#ddd5c4;text-underline-offset:3px;
+}
+.skip:hover{color:var(--accent)}
+.skip.on{color:var(--accent);text-decoration-color:var(--accent)}
+
+.nw{margin-top:9px}
+.nw .addnote{
+  font-family:system-ui,sans-serif;font-size:11px;color:var(--ink3);background:none;border:none;
+  cursor:pointer;padding:2px 0;letter-spacing:.05em;
+}
+.nw .addnote:hover{color:var(--teal)}
+.nw textarea{
+  display:none;width:100%;margin-top:6px;padding:9px 11px;border:1px solid var(--line);border-radius:3px;
+  font-family:inherit;font-size:13px;line-height:1.7;color:var(--ink);background:#fdfcf9;resize:vertical;min-height:56px;
+}
+.nw.open textarea{display:block}
+
+/* 底部操作条 */
+.botbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:35;display:flex;align-items:center;gap:12px;
+  padding:11px clamp(14px,4vw,34px) calc(11px + env(safe-area-inset-bottom));
+  background:rgba(251,249,244,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);
+}
+.botbar .bmsg{font-family:system-ui,sans-serif;font-size:11.5px;color:var(--ink3);letter-spacing:.04em;flex:1;min-width:0}
+.botbar button{
+  font-size:13.5px;padding:10px 22px;border-radius:3px;cursor:pointer;letter-spacing:.04em;white-space:nowrap;
+  border:1px solid var(--line);background:#fff;color:var(--ink2);transition:.16s;
+}
+.botbar button:hover{border-color:var(--ink3)}
+.botbar button.main{background:var(--ink);border-color:var(--ink);color:#fbf9f4}
+.botbar button.main:hover{background:#3a3128}
+
+/* ============ 结果 ============ */
+#result{padding:clamp(26px,5vw,48px) clamp(14px,4vw,34px) 90px}
+.rw{max-width:880px;margin:0 auto}
+.rdate{font-family:system-ui,sans-serif;font-size:11.5px;color:var(--ink3);letter-spacing:.1em;margin-bottom:18px}
+
+.grade{display:flex;align-items:flex-end;gap:clamp(20px,5vw,48px);flex-wrap:wrap;padding-bottom:24px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.gscore{display:flex;align-items:baseline;gap:8px}
+.gscore b{font-size:clamp(64px,13vw,96px);line-height:.95;letter-spacing:-.03em;font-weight:700;font-variant-numeric:tabular-nums}
+.gscore span{font-family:system-ui,sans-serif;font-size:15px;color:var(--ink3)}
+.gscore em{display:block;font-family:system-ui,sans-serif;font-style:normal;font-size:11.5px;color:var(--ink3);letter-spacing:.14em;margin-top:6px}
+.gbadge{display:flex;align-items:center;gap:14px;padding-bottom:8px}
+.gbadge .gl{
+  width:62px;height:62px;line-height:62px;text-align:center;border-radius:3px;color:#fff;
+  font-family:system-ui,sans-serif;font-size:29px;font-weight:700;flex:0 0 auto;
+}
+.gbadge .gt b{display:block;font-size:20px;letter-spacing:.01em}
+.gbadge .gt span{display:block;font-family:system-ui,sans-serif;font-size:12.5px;color:var(--ink3);margin-top:3px}
+.gmeta{margin-left:auto;font-family:system-ui,sans-serif;font-size:11.5px;color:var(--ink3);text-align:right;line-height:1.9;letter-spacing:.04em}
+
+.rtitle{font-size:13px;letter-spacing:.16em;color:var(--ink3);font-family:system-ui,sans-serif;margin:30px 0 13px;padding-bottom:7px;border-bottom:1px solid var(--line2)}
+
+.drow2{display:grid;grid-template-columns:112px 1fr 46px;align-items:center;gap:12px;padding:5px 0}
+.drow2 .dnm{font-family:system-ui,sans-serif;font-size:12.5px;color:var(--ink2)}
+.drow2 .dbt{height:8px;background:#efe9db;border-radius:4px;overflow:hidden}
+.drow2 .dbt i{display:block;height:100%;border-radius:4px;transition:width .5s ease}
+.drow2 .dvl{font-family:system-ui,sans-serif;font-size:12px;color:var(--ink2);text-align:right;font-variant-numeric:tabular-nums}
+
+.wlist{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.witem{background:#fff;padding:13px 16px;display:flex;gap:13px;align-items:flex-start;cursor:pointer;transition:.15s}
+.witem:hover{background:#fdfcf8}
+.witem .wsc{
+  font-family:system-ui,sans-serif;font-size:15px;font-weight:700;width:30px;height:30px;line-height:30px;
+  text-align:center;color:#fff;border-radius:2px;flex:0 0 auto;font-variant-numeric:tabular-nums;
+}
+.witem .wt{flex:1;min-width:0}
+.witem .wt b{display:block;font-size:14px;margin-bottom:3px}
+.witem .wt p{font-size:13px;color:var(--ink2);line-height:1.7}
+.witem .wx{font-family:system-ui,sans-serif;font-size:11.5px;color:var(--teal);margin-top:5px;display:block}
+
+.slist{display:flex;flex-wrap:wrap;gap:6px}
+.slist .s1{
+  font-family:system-ui,sans-serif;font-size:12px;padding:5px 11px;background:#f2f7f5;color:#37665e;
+  border:1px solid #d8e6e1;border-radius:2px;
+}
+
+.acts2{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0 8px}
+.acts2 button{
+  font-size:13.5px;padding:11px 20px;border-radius:3px;cursor:pointer;letter-spacing:.04em;
+  border:1px solid var(--line);background:#fff;color:var(--ink2);transition:.16s;
+}
+.acts2 button:hover{border-color:var(--ink3)}
+.acts2 button.k{background:var(--accent);border-color:var(--accent);color:#fff}
+.acts2 button.k:hover{background:#7a3221}
+.acts2 button.g{background:var(--teal);border-color:var(--teal);color:#fff}
+.acts2 button.g:hover{background:#264c47}
+
+.hist{margin-top:6px}
+.hchart{background:#fff;border:1px solid var(--line);padding:14px 16px}
+.hrow{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px dotted var(--line2);font-family:system-ui,sans-serif;font-size:12.5px;color:var(--ink2)}
+.hrow:last-child{border-bottom:none}
+.hrow .hd{color:var(--ink3);width:118px;flex:0 0 auto}
+.hrow .hs{font-weight:700;font-variant-numeric:tabular-nums;width:46px}
+.hrow .hb{padding:1px 8px;border-radius:2px;color:#fff;font-size:11px}
+.hrow .ha{margin-left:auto;color:var(--ink3);font-size:11.5px}
+
+/* ============ 浮层 ============ */
+#sheet{
+  position:fixed;inset:0;z-index:80;display:none;
+  background:rgba(35,28,18,.58);backdrop-filter:blur(3px);
+  padding:clamp(16px,4vw,48px);overflow-y:auto;
+}
+#sheet.on{display:flex;align-items:flex-start;justify-content:center}
+.sheetbox{
+  width:100%;max-width:600px;background:#fff;border-radius:4px;box-shadow:0 24px 80px -20px rgba(30,20,5,.5);
+  animation:pop .22s ease;margin:auto 0;
+}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:none}}
+.sh{display:flex;align-items:flex-start;gap:12px;padding:20px 22px 15px;border-bottom:1px solid var(--line2)}
+.sh .sid{font-family:system-ui,sans-serif;font-size:11px;color:var(--ink3);letter-spacing:.1em;display:block;margin-bottom:4px}
+.sh h3{font-size:18px;line-height:1.4}
+.sh .ssrc{font-family:system-ui,sans-serif;font-size:11px;color:var(--ink3);display:block;margin-top:5px;letter-spacing:.04em}
+.sh .x{
+  margin-left:auto;width:30px;height:30px;border:1px solid var(--line);background:#fff;border-radius:2px;
+  cursor:pointer;color:var(--ink3);font-size:16px;flex:0 0 auto;line-height:1;
+}
+.sh .x:hover{border-color:var(--accent);color:var(--accent)}
+.sb{padding:18px 22px 22px;font-size:14.6px;line-height:1.85}
+.sb .lab{
+  font-family:system-ui,sans-serif;font-size:10.5px;letter-spacing:.18em;color:var(--accent);
+  margin:0 0 6px;display:block;
+}
+.sb .core{font-size:15.2px;line-height:1.85;margin-bottom:18px;color:var(--ink)}
+.sb ul{margin:0 0 18px;padding-left:0;list-style:none}
+.sb ul li{position:relative;padding-left:20px;margin:8px 0;color:var(--ink2);font-size:14.2px;line-height:1.75}
+.sb ul li::before{content:"—";position:absolute;left:0;color:var(--accent);opacity:.55}
+.sb .bad{background:#fdf5f2;border-left:2px solid #c9775e;padding:11px 14px;font-size:13.6px;color:#5e3a2c;line-height:1.78;margin-bottom:16px}
+.sb .nx{background:#f3f7f5;border-left:2px solid var(--teal);padding:11px 14px;font-size:13.6px;color:#2c4d47;line-height:1.78}
+.sb .sf{margin-top:16px;font-family:system-ui,sans-serif;font-size:11px;color:var(--ink3);letter-spacing:.04em}
+
+/* 海报层 */
+#poster{position:fixed;inset:0;z-index:90;display:none;background:rgba(35,28,18,.55);padding:clamp(12px,3vw,32px);overflow-y:auto}
+#poster.on{display:block}
+.pw{max-width:520px;margin:0 auto;background:#fbf9f4;border-radius:4px;padding:14px;box-shadow:0 24px 80px -20px rgba(30,20,5,.6)}
+.pw img{width:100%;display:block;border:1px solid var(--line)}
+.pact{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.pact button{
+  flex:1;min-width:110px;font-size:13px;padding:11px;border-radius:3px;border:1px solid var(--line);
+  background:#fff;color:var(--ink2);cursor:pointer;
+}
+.pact button.k{background:var(--accent);border-color:var(--accent);color:#fff}
+.pnote{font-family:system-ui,sans-serif;font-size:11px;color:var(--ink3);margin-top:9px;text-align:center;letter-spacing:.04em}
+
+/* toast */
+#toast{
+  position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(10px);z-index:120;
+  background:#241f19;color:#f7f3ea;font-family:system-ui,sans-serif;font-size:12.5px;letter-spacing:.04em;
+  padding:9px 18px;border-radius:3px;opacity:0;pointer-events:none;transition:.24s;white-space:nowrap;
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ============ 响应式 ============ */
+@media (max-width:760px){
+  .brand span{display:none}
+  .prog{max-width:none}
+  .saved{display:none}
+  .tacts button{padding:6px 9px;font-size:11.5px}
+  .cells{grid-template-columns:1fr}
+  .dgrid{grid-template-columns:1fr 1fr}
+  .cells>div{padding:14px 16px}
+  .gmeta{display:none}
+  .grade{gap:16px}
+  .drow2{grid-template-columns:84px 1fr 40px;gap:9px}
+  .drow2 .dnm{font-size:11.5px}
+  .botbar .bmsg{display:none}
+  .botbar button{flex:1;text-align:center}
+  .sh{padding:16px 17px 13px}
+  .sb{padding:15px 17px 18px}
+  .hrow .hd{width:88px}
+}
+@media (max-width:560px){
+  .tacts #btnJson,.tacts #btnImport{display:none}
+  .prog{max-width:none}
+}
+@media (max-width:420px){
+  .scale button{width:29px;height:29px;font-size:12px}
+  .brand b{font-size:14px}
+  .tacts button{padding:6px 10px}
+  .cid{display:none}
+}
+.linklike{
+  display:inline-block;margin-top:2px;font-family:system-ui,sans-serif;font-size:11.5px;color:var(--ink3);
+  background:none;border:none;border-bottom:1px dotted var(--line);cursor:pointer;padding:0 0 2px;letter-spacing:.03em;
+}
+.linklike:hover{color:var(--teal);border-color:var(--teal)}
+@media print{
+  #top,.botbar,.cvbtns,#sheet,#poster,#toast{display:none!important}
+  body{background:#fff}
+  .screen{display:block!important}
+}
+</style>
+</head>
+<body>
+
+<header id="top">
+  <div class="brand"><b>创业领导力</b><span>核心自检 · 38 件</span></div>
+  <div class="prog"><div class="bar"><i id="pbar"></i></div><em id="ptxt">0 / 38</em></div>
+  <div class="tacts">
+    <span class="saved" id="saved">未开始</span>
+    <button id="btnJson">导出 JSON</button>
+    <button id="btnImport">导入</button>
+    <button id="btnResult" class="primary">看结果</button>
+  </div>
+</header>
+
+<!-- ============ 封面 ============ -->
+<section id="cover" class="screen on">
+  <div class="cv">
+    <div class="kicker">C11 · 第 1—8 讲 · 核心条目</div>
+    <h1>核心自检
+      <small>38 件核心工具，每件一道关键判断。做完约 8—12 分钟。<br>不追求答得漂亮，只求答得准。</small>
+    </h1>
+
+    <div class="quote">
+      <b>报时人说几点，造钟人造一台走得准的钟。</b><br>
+      这份自检只做一件事：让你看清，公司里哪些事已经不需要你了，哪些事还只认你一个人。
+    </div>
+
+    <div class="cvbtns">
+      <button class="big" id="btnStart">开始自检</button>
+      <button class="resume" id="btnResume" hidden>继续上次</button>
+    </div>
+
+    <p style="font-family:system-ui,sans-serif;font-size:11px;letter-spacing:.14em;color:var(--ink3);margin:0 0 9px">覆 盖 九 个 域</p>
+    <div class="dgrid">
+      <div class="dg"><b>A</b><span>自我与判断</span><i>5</i></div>
+      <div class="dg"><b>B</b><span>角色与转身</span><i>3</i></div>
+      <div class="dg"><b>C</b><span>机制与造钟</span><i>1</i></div>
+      <div class="dg"><b>D</b><span>授权与放手</span><i>3</i></div>
+      <div class="dg"><b>E</b><span>找人与共事</span><i>5</i></div>
+      <div class="dg"><b>F</b><span>团队真话</span><i>5</i></div>
+      <div class="dg"><b>G</b><span>激励与教练</span><i>2</i></div>
+      <div class="dg"><b>H</b><span>机制与人机</span><i>8</i></div>
+      <div class="dg"><b>I</b><span>学习与修炼</span><i>6</i></div>
+    </div>
+
+    <div class="cells">
+      <div>
+        <h4>怎么打分</h4>
+        <p>0 = 完全没做，5 = 已经稳定运行。<br>第一反应最准，不要替自己找折中分。</p>
+      </div>
+      <div>
+        <h4>问号是什么</h4>
+        <p>每道题右侧的「?」点开，是这件工具的知识点、三条判断标准、以及用坏的样子。</p>
+      </div>
+      <div>
+        <h4>结果能干什么</h4>
+        <p>自动算分、分域、给评级；可导出 JSON 长期跟踪，也可生成海报分享。</p>
+      </div>
+    </div>
+
+    <p class="foot">
+      <b>做到一半可以直接关掉</b>，下次打开自动接着做。<br>
+      数据只存在你自己的浏览器里，不上传任何服务器。导出 JSON 后可以换设备继续。<br>
+      <button class="linklike" id="btnImport2">已有 JSON？导入历史记录</button>
+    </p>
+  </div>
+</section>
+
+<!-- ============ 自检 ============ -->
+<main id="main" class="screen">
+  <div class="mw" id="list"></div>
+</main>
+
+<!-- ============ 结果 ============ -->
+<section id="result" class="screen">
+  <div class="rw" id="rbody"></div>
+</section>
+
+<div class="botbar" id="botbar" style="display:none">
+  <span class="bmsg" id="bmsg">已答 0 / 38</span>
+  <button id="btnNext">下一道未答</button>
+  <button class="main" id="btnFinish">完成评估</button>
+</div>
+
+<!-- 知识点浮层 -->
+<div id="sheet">
+  <div class="sheetbox" id="sheetbox"></div>
+</div>
+
+<!-- 海报浮层 -->
+<div id="poster">
+  <div class="pw">
+    <img id="pimg" alt="自检海报">
+    <div class="pact">
+      <button class="k" id="btnSavePng">保存图片</button>
+      <button id="btnClosePoster">关闭</button>
+    </div>
+    <p class="pnote">长按图片也可保存 · 建议发在群里而不是只发给自己</p>
+  </div>
+</div>
+
+<div id="toast"></div>
+<input type="file" id="fileIn" accept="application/json,.json" hidden>
+
+<script>
+(function(){
+'use strict';
+
+var DATA = [
+{"id":"t01","n":"领导力即责任","d":"A","s":"德鲁克 · S01",
+"q":"最近一周，我能对团队讲清「这件事为什么值得做」，而不是只讲「什么时候交」。",
+"c":"意义感（我想做）＋义务感（我该做）＋信心感（我能做）＝责任感。三个都缺，就只剩应付。",
+"p":["意义：这事为什么值得做，我最近一次讲清是哪一天","义务：谁对结果负责，点名到人——包括我自己","信心：我给的是能赢的证据（资源、路径、先例），还是只是加油"],
+"b":"只剩打气（有热情没意义），或只剩压任务（有义务没意义）——两种都会把责任感换成应付。",
+"x":"下次布置任务时，先说三句：为什么做、谁负责、凭什么能赢。"},
+
+{"id":"t02","n":"「我来」六句话","d":"A","s":"S01",
+"q":"六句话里，我最近真正做到的是「我来担责」，而不是停在「让我来」。",
+"c":"让我来 → 跟我来 → 我们一起来 → 我来拍板 → 我来担责 → 我来改变。越往后，走到的人越少。",
+"p":["我说得出自己长期停在第几句（多数人停在第二句）","下属出错时，我先认哪一部分是自己的责任","「我来改变」改的是具体动作，不是心态"],
+"b":"六句都会说，但没有一句带动作和时间；「我来拍板」退化成「什么都得我拍」。",
+"x":"写下你长期停住的那一句，以及下一句需要的那个具体动作。"},
+
+{"id":"t04","n":"问题归位五位置","d":"A","s":"S01",
+"q":"遇到问题，我先判断它落在五个位置中的哪一个，而不是直接归到「某个人不行」。",
+"c":"事情本身／某个具体的人／人和人之间／机制与规则／外部情境。只有前三个进三力模型，机制与情境是三层之外的条件。",
+"p":["换个人还是一样，那多半是机制问题","哪一部分属于我改变不了的外部情境，我却一直在使劲","同一类问题反复出现，是不是位置一直归错"],
+"b":"所有问题都归到「人」（陷入换人循环），或都归到「外部」（提前免责）。",
+"x":"把最近一个头疼的问题写成一句话，标出它落在第几个位置。"},
+
+{"id":"t06","n":"HAVE–DO–BEING 排序","d":"A","s":"S02",
+"q":"我最近一个决定，不是以「等我有了 X 再做 Y」开头的。",
+"c":"三种排法里，创业者只能用 BEING→DO→HAVE：先有身份与选择，再行动，资源跟着来。反过来就是等。",
+"p":["我指得出最近哪个决定是「等」开头的","资源不增加时，我今天能做的第一个动作说得出","有过一次按「我是谁」而不是「我有什么」做的选择"],
+"b":"把「等」包装成「蓄力」；嘴上说效果逻辑，计划表还是因果逻辑。",
+"x":"把「等融资/等人/等市场」的那件事，改写成今天能做的第一个动作。"},
+
+{"id":"t07","n":"四层觉察 ＋ 有意识的暂停","d":"A","s":"S02",
+"q":"今天至少有一次，我在情绪推动之前停了三秒。",
+"c":"身体（链接）／情绪（接纳）／思想（观照）／角色（看清位置）。最短的一步觉察，就是停三秒。",
+"p":["我知道自己身体最早的信号（肩、胃、语速），并且听见了","我分得清此刻是在「角色里」说话，还是在「我」里说话","暂停之后我做了不同的事，而不是只把话咽下去"],
+"b":"把觉察做成事后检讨；把「暂停」做成压抑（不表达，但记账）。",
+"x":"设一个每日提醒：回消息前先停三秒，看肩颈是不是紧的。"},
+
+{"id":"t12","n":"生命周期与 P/E/A/I 四职能","d":"B","s":"爱迪思 · S03",
+"q":"我说得出公司现在卡在哪个阶段，以及这个阶段最缺哪一项职能（P/A/E/I）。",
+"c":"婴儿期→学步期→青春期（最险）→盛年。P 执行／A 行政／E 创新／I 整合，需要接力而非一人全包。",
+"p":["我没在用上一阶段的自己，处理这一阶段的事","E（创新）没有全揽在我一个人身上","加流程的时候我留了 E 的空间，而不是把 E 掐死"],
+"b":"用「文化」解释所有阶段问题；在青春期猛加 A（流程与审批），把 E 掐死。",
+"x":"写下当前阶段最缺的那一项职能，以及这一季要补它的一个动作。"},
+
+{"id":"t14","n":"领导梯队三维转身","d":"B","s":"拉姆·查兰等 · S03",
+"q":"最近三个月，我的技能、时间配置、工作理念三样同时在变，而不只是学了新工具。",
+"c":"技能／时间配置／工作理念，三样必须同时变。「靠自己」→「靠别人」是第一次转身。",
+"p":["技能上我最该会的是「让别人做成」，不是「自己会做」","日历上「只有我能做」的小时数在下降","我不再靠「我做得好」来获得价值感"],
+"b":"只学工具（技能变了），时间和价值感没变——于是继续抢活，还觉得自己在「带队」。",
+"x":"对比这周和三个月前的日历，看「自己干」的时间少了没有。"},
+
+{"id":"t16","n":"两条结果线","d":"B","s":"S03",
+"q":"上一场硬仗打完，我除了看数字，说得出至少一件组织上长出来的东西。",
+"c":"任何一次硬仗都有「业务结果线」和「组织结果线」。只赢第一条，是在向公司的未来借高利贷。",
+"p":["具体到某个人，谁的成长被这次硬仗推进了","这次沉淀了什么可复用的方法或机制","同样的事再来一次，还需要我吗"],
+"b":"庆功只看数字；把「我带人去了」当成培养（人在旁边看 ≠ 在练）。",
+"x":"下一次复盘固定加一栏：这次长出了什么，谁长了。"},
+
+{"id":"t20","n":"最小可行机制五条件","d":"C","s":"S03",
+"q":"我最近立的规矩，五个零件齐全：触发情境、第一责任人、判断标准、求助边界、复盘时点。",
+"c":"五条缺一不可。最常漏的是④求助边界和⑤复盘时点。",
+"p":["一线遇到异常，不看我也知道先看哪一步","试行期定了第几天、拿什么数据核对","写的是「要求＋路径」，不是只有「要求」"],
+"b":"写成几十页大制度；或五条只写「要求」，没写「超哪条线找谁」。",
+"x":"拿最常用的一条规矩，补齐「超哪条线找我」和「第几天复盘」。"},
+
+{"id":"t22","n":"情境领导 D1–D4 / S1–S4","d":"D","s":"布兰查德 · S03/S06",
+"q":"我给一个人的管理风格，是按「这件具体任务」评的，而不是按「这个人一直怎样」。",
+"c":"按这件任务的准备度选风格：D1 低能力高意愿→S1 指令；D2→S2 教练；D3 会做但没底气→S3 支持；D4→S4 授权。",
+"p":["老将换了新任务，我重新评过一遍","判断能力看证据，判断意愿看的是动力还是底气","我的风格和他的层级没有错配"],
+"b":"用「他一直很靠谱」覆盖新任务；把 D3（会做但没底气）当 D1（不会做）来指挥。",
+"x":"挑一个人一件新任务，先写下 D 层级，再定这周用哪种风格。"},
+
+{"id":"t23","n":"七层授权刻度","d":"D","s":"阿佩罗《管理 3.0》 · S06",
+"q":"交给别人的每件事，我说得出它在第几层，而不是只说「你全权负责」。",
+"c":"1 告知／2 推销／3 咨询／4 商定／5 建议／6 过问／7 委托。1–3 你定，4 双方一致，5–7 对方定。",
+"p":["我把一件事拆成几个决定领域分别定级（如排期 6 层、参数变更 4 层、改期 3 层）","3 与 5 的区别（谁拍板）、5 与 6 的区别（事前建议还是事后汇报），我分得清","定完层之后，我没有越层插手"],
+"b":"笼统「全权」，出事再收回；或所有事都定在第 4 层（等于没有授权）。",
+"x":"挑一件常交办的事，写下三个决定领域各自的层级数字。"},
+
+{"id":"t25","n":"六栏《成果委托准备单》","d":"D","s":"S06",
+"q":"上一次交办，六栏我都填了：任务、成果、层级、红线、资源、早期检查点。",
+"c":"六栏缺一栏，交出去的就不是成果，是活儿。结束前请承担者当面复述边界与升级点。",
+"p":["「期望成果」写的是交付物，不是「要努力」","最常空的两栏（③层级、⑥早期节点）我填了","他当面复述过边界和升级点"],
+"b":"口头一句「你搞定」；复述时他说「懂了」，你没让他说出边界。",
+"x":"下一次交办，先用六行写完再开口，最后让他复述红线。"},
+
+{"id":"t29","n":"五类接手条件","d":"E","s":"S04",
+"q":"上次「最后还是我来」的事，我能指出缺的是能力、信息、标准、权限、接口里的哪一类。",
+"c":"能力／信息／判断标准／权限／工作接口。不设相加总分——任何一项为零，工作就退回创始人。",
+"p":["我补的是真正缺的那一类，不是最容易补的那一类","他手上是必要事实，不是二手转述","决定之后，他知道怎么接下一步"],
+"b":"只补能力（送培训），不补标准和接口；用「总分」评估（85 分就上，结果卡在零分项）。",
+"x":"把那件反复回到你手上的事，五类逐项打分，看哪一项是零。"},
+
+{"id":"t30","n":"五把岗位尺子","d":"E","s":"S04",
+"q":"招人之前，我把方法、事实、标准、权限、接口五把尺子都给了。",
+"c":"①工作方法②判断事实③完成标准④承诺权限⑤协作接口。招人之前，先把这五把给全。",
+"p":["没有「顺路抢单」「当众改口」这类越位回撤","我不把「他不适合创业公司」当结论，而是当待查的假设","换人之前，我先查岗位本身是否准备好"],
+"b":"把「岗位没准备好」归因成「人的问题」，然后不断换人。",
+"x":"给现在一个空岗写五把尺子，写不出的那几把就是招不到人的原因。"},
+
+{"id":"t31","n":"3R 齿轮","d":"E","s":"瓦瑟曼 · S04",
+"q":"我最近动了一个人的角色、报酬或关系，同时想过另外两齿会怎么转。",
+"c":"角色（分工与决定权）／报酬（股权·提成·年薪）／关系（信任基础）。改一齿，必须追问另外两齿。",
+"p":["老伙伴的旧账（口头期权、历史贡献）结清了","这个条件三个月后不会被看成「不公平」","我动这一齿的连锁反应，说得出具体人和具体事"],
+"b":"只谈钱不谈角色；新人的条件谈成了，老团队寒心了。",
+"x":"下一次调整前，先画三角：我动哪一齿，另两齿各受什么影响。"},
+
+{"id":"t36","n":"I/R/A/D/P 决策角色","d":"E","s":"S04",
+"q":"重要决定上，D（拍板）只写了一个名字，而且 A（批准）与 D 是分开的。",
+"c":"I 知会／R 建议／A 批准／D 拍板／P 执行。D 只能写一个名字。",
+"p":["我没有用「共同负责」回避拍板","A 和 D 分开了：批准的人不执行，执行的人不自我批准","其他人是 I 还是 R，说清了"],
+"b":"五个角色写成三个人；用「共同负责」回避拍板（等于没人负责）。",
+"x":"挑一个正在拖的决定，把 I/R/A/D/P 各写一个名字。"},
+
+{"id":"t37","n":"五格交接单","d":"E","s":"S04",
+"q":"对外承诺之前，五格都写清了：工作、条件、边界、反馈、重判。",
+"c":"工作（谁做什么）／条件（拿什么去换）／边界（可以让到哪）／反馈（几点回传什么）／重判（什么情况再上桌）。",
+"p":["最常漏的「条件」和「重判」，我补上了","「反馈」写的是时间点，不是「尽快」","什么情况必须回桌重判，说清了"],
+"b":"只传话不给筹码；客户拒了，问题压在一线，等爆单才上报。",
+"x":"下一次对外谈判前，写下你的「可以让到哪」和「什么情况回桌」。"},
+
+{"id":"t39","n":"心理安全矩阵","d":"F","s":"埃德蒙森 · S05",
+"q":"我在的会上，有人说坏消息时不用先想「说完会不会挨骂」。",
+"c":"心理安全 × 高标准，四象限：高安全＋高标准＝学习区。心理安全 ≠ 降标准。",
+"p":["我最近一次听到坏消息，是几小时前而不是几周后","我没有把「提标准」和「骂人」绑在一起","我说得出团队现在在哪一格（舒适/焦虑/冷漠/学习）"],
+"b":"为了「安全」降低要求（滑进舒适区）；或高标准＋高恐惧（焦虑区，人走光）。",
+"x":"下次开会先问一句：最近哪件事让你觉得不对劲。只问，不评。"},
+
+{"id":"t41","n":"信任公式","d":"F","s":"梅斯特等 · S05",
+"q":"团队对我的信任，我修的是「可靠」（说到做到），而不只是「亲近」（关系好）。",
+"c":"T ＝（可信 ＋ 可靠 ＋ 亲近）÷ 自我取向。分母一秒清零。",
+"p":["三项里，我说得出自己最弱的一项","我知道自己的「自我取向」在哪些场合冒出来（抢功、护短、只谈自己的目标）","我没有为了「显得正确」牺牲可信"],
+"b":"只做「亲近」（吃饭喝酒）不修「可靠」（说到做到）；分母爆掉后还想靠解释挽回。",
+"x":"列出最近三件你答应过但没兑现的小事，这周先补上。"},
+
+{"id":"t43","n":"冲突三分法","d":"F","s":"杰恩 · S05",
+"q":"会上吵起来时，我先分清争的是任务、过程还是关系，而不是笼统说「氛围不好」。",
+"c":"任务冲突（做什么）／过程冲突（怎么做）／关系冲突（针对人）。关系冲突必须清零。",
+"p":["我没把「过程分歧」翻译成「态度差」","关系冲突的部分我处理了，不是压下去了","我没用「团队氛围」掩盖真实的任务分歧"],
+"b":"用「团队氛围」掩盖任务分歧；把关系冲突当任务冲突开会（越开越僵）。",
+"x":"把最近一次冲突写成一句话：我们在争＿＿。看它落在哪一类。"},
+
+{"id":"t44","n":"推论阶梯","d":"F","s":"阿吉里斯 · S05",
+"q":"我下结论之前，能分清哪些是观察到的、哪些是我脑补的动机。",
+"c":"观察→筛选→解释→脑补动机→站队。第 2 层（筛选）是唯一的黄金刹车位。",
+"p":["我的「事实」里没有混进解释","我脑补的动机，找得到证据","我会下梯问一句「你当时看到的是什么」"],
+"b":"从「他没回消息」直接跳到「他不在乎」；用「我就是直」掩盖脑补。",
+"x":"挑一个你最近下的负面判断，分两栏写：我看到什么、我猜什么。"},
+
+{"id":"t46","n":"3F 复述","d":"F","s":"S05",
+"q":"我复述对方的话时，说到他点头，才提自己的方案。",
+"c":"Fact 事实／Feeling 感受／Focus 焦点。说到对方点头，再提己方方案。",
+"p":["我复述的是事实，不是我的结论","我用的是他的词，不是我的词","我说完之后等他点头，而不是接「但是」"],
+"b":"「我懂，但是……」——这是最危险的复述，它是反驳的前奏。",
+"x":"下一次一对一，前五分钟只复述，不给任何建议。"},
+
+{"id":"t49","n":"自我决定理论","d":"G","s":"瑞安 & 德西 · S06",
+"q":"我能说出某个人现在最缺的是自主、胜任还是关系，而不是一律用钱解决。",
+"c":"自主／胜任／关系，三种基本需要。谈意义不能替代公平报酬。",
+"p":["我给的是真边界，不是「出了事我兜着」的假自主","报酬这件事，我没用「以后会好」在拖","我知道职场里多数人缺的是自主"],
+"b":"用情怀补钱；或用加薪补自主（加完还是走）。",
+"x":"挑一个想走的人，问他：哪三件事你其实可以自己定？"},
+
+{"id":"t53","n":"GROW 对话地图","d":"G","s":"惠特默 · S06",
+"q":"我上一次教练对话，最后落到了 W：谁、何时、做到什么算完成。",
+"c":"G 定靶心／R 清事实／O 拓选项／W 锁行动。是地图不是填空，可以动态折返。",
+"p":["谈话开始前，我知道他要带走什么","我分得清哪些是事实、哪些是推测","选项至少拓到第三个，我才收"],
+"b":"G 没定就开始问选项；问完没有 W（聊得很爽，什么都没变）。",
+"x":"下次谈话的最后一句固定问：第一步什么时候做，做到什么算完成？"},
+
+{"id":"t55","n":"两大错觉对照","d":"H","s":"S07",
+"q":"我不把「发了文件」或「招到了能人」当成「有了机制」。",
+"c":"制度错觉：发了文件＝有了机制。能人错觉：招到人＝有了机制。共同病根是取舍标尺还在你脑子里。",
+"p":["那份制度一线真的会用，还是只在审计和汇报时出现","那个能人明天离职，我说得出哪几件事会停摆","我没把「我亲自处理」当成机制在运转"],
+"b":"用一份厚文件证明自己已经「体系化」；用招人弥补流程缺口，人一走缺口原样出现。",
+"x":"挑一份你引以为傲的制度，问一线：你上次用它是什么时候？"},
+
+{"id":"t56","n":"沙因文化冰山三层","d":"H","s":"沙因 · S07",
+"q":"我要改的这条规则，动的是器物层（墙上、流程），还是第三层假设。",
+"c":"器物（墙上挂的）→ 信奉的价值观（嘴上说的）→ 基本假设（真出事时默认怎么办）。机制在第三层。",
+"p":["墙上写的、会上说的、真出事时实际做的，三样一致","我知道我们默认「出事先捂住」还是「出事先上报」","我改的时候，动的是假设层"],
+"b":"换标语、贴海报、搞文化手册——全在器物层用力，第三层纹丝不动。",
+"x":"回想上一次出事，大家的第一反应是什么。那就是第三层。"},
+
+{"id":"t57","n":"报时人 vs 造钟人","d":"H","s":"柯林斯 · S07",
+"q":"最近一周，「只能等我说了才算」的事少于三件。",
+"c":"报时人三信号：急单回你手上／你不在没人拍板／团队只交动作不交判断。造钟人三动作：说标准、传信号、定兜底。",
+"p":["除了给答案，我说过这件事的判断标准","我不在的时候，有人有资格说「就这么办」","我知道自己现在更像报时人还是造钟人"],
+"b":"把自己练成最好的报时人，然后抱怨团队不长脑子。",
+"x":"挑一件「只有我能定」的事，把判断标准写成一页纸给他。"},
+
+{"id":"t58","n":"经验三断点诊断","d":"H","s":"阿吉里斯 · S07",
+"q":"上次翻车之后，我能指出断在标准、信号还是兜底，而不是笼统说「执行力不行」。",
+"c":"标准断点（没说清什么叫好）／信号断点（异常传不到你耳朵）／兜底断点（没人敢拍板）。各配一个动作：划红线、定时点、清免责。",
+"p":["我补的是真正的那个断点，不是最容易补的那个","补完之后同类事情再发生，我知道会在哪一步被通知","我没用「再培训一次」解决所有问题"],
+"b":"所有问题都用「再培训一次」解决——那只是在标准断点上反复加固，信号和兜底照旧。",
+"x":"把最近一次事故写成三行：标准缺什么、信号断在哪、谁敢拍板。"},
+
+{"id":"t60","n":"六条件造时钟","d":"H","s":"S07",
+"q":"随便拿一个已在跑的机制，六个条件我都能当场填出具体内容。",
+"c":"上三立界：谁来做／什么算好（三档）／什么不许做（红线）。下三闭环：异常怎么报／多久回看／谁来兜底。",
+"p":["责任人只有一个名字，不是「团队」","三档标准（绿灯/灰区/红灯）都写出来了","兜底那栏写了「什么条件下他拍板不算错」"],
+"b":"六条件只写前三个（要求、流程、罚则），后三个全缺——文件很威严，一线照样来问你。",
+"x":"画六格，把最常用的那个机制填一遍。空着的格子就是漏的。"},
+
+{"id":"t62","n":"入笼三戒","d":"H","s":"S07",
+"q":"过去一个月，我没有口头改过已公布的规则；破例时我说明了「这是例外，规则不变」。",
+"c":"一戒创始人例外（你不进笼，笼子就是给别人做的）／二戒口头改令／三戒只罚不奖。",
+"p":["守规矩的人，得到过什么","我破例之后，当天同步给所有相关人","制度不是只给中层定的"],
+"b":"老板一句「先按我说的办」，前面三个月白干，团队学到的是「制度可以不遵守」。",
+"x":"下一次要破例时，先说「这次例外，规则不变」，再讲理由。"},
+
+{"id":"t64","n":"人机协同五步法","d":"H","s":"多尔蒂 · NIST · S07",
+"q":"我们用的每个 AI 环节，都写下了白名单、禁入区、签字人和接管预案。",
+"c":"①白名单（只让它干这几类）→②禁入区→③上下文（喂什么、喂到什么程度）→④人工复核（谁签字）→⑤异常接管与错题复盘。",
+"p":["算法给出结果后有人签字，且他看得懂依据","算法判错的那一次，变成了规则的一条","不是只有「用它提效」这一句口号"],
+"b":"98.5% 准确率就全量上线，没有禁入区、没有人工复核。剩下 1.5% 赔了八十万——算法不担责，签字的人担。",
+"x":"给在用的一套系统补一张卡：能干什么、绝不干什么、谁签字。"},
+
+{"id":"t65","n":"AI 上线三道硬闸门","d":"H","s":"NIST AI RMF · S07",
+"q":"上线前我答得出三个问题：它为什么这么判、谁能推翻、多久能切回人工。",
+"c":"可解释（说得出为什么）／可复核（有人能推翻并留痕）／可接管（异常时多久切回人工）。三闸缺一，不许上线。",
+"p":["它判错的依据，我们复现得出来","推翻它有路径、有留痕、有人批","切回人工是分钟级，不是「回头再说」"],
+"b":"把「准确率」当唯一指标。准确率 99% 的系统，在 1% 的场景里没人能接管，就是 100% 的事故。",
+"x":"挑一个在用系统，实测一次「切回人工」要多久。"},
+
+{"id":"t66","n":"事实与评价三要素","d":"I","s":"S08",
+"q":"我批评人的那句话里没有形容词，全是时间、场景、行为、结果。",
+"c":"把「团队不主动」改写成：什么时间、什么场景、谁的什么具体行为、造成什么可观察结果。评价留在心里，事实才进会议室。",
+"p":["我说的这句，能被拍成视频验证","换成我最信任的人做同样的事，我还会这样描述吗","我说的是哪一天、哪件事，不是「总是」"],
+"b":"用形容词开会。「不够主动」「缺乏担当」「执行力不行」——每句话都在说人，没有一句在说事。",
+"x":"把最近一次批评改写成四要素，看还能剩下多少。"},
+
+{"id":"t67","n":"单环与双环学习","d":"I","s":"阿吉里斯 · S08",
+"q":"上次结果不对，我回头看的是自己的假设，而不只是改动作。",
+"c":"单环：结果不对→改动作，假设不动。双环：结果不对→回头查「我当初的前提对吗」。分界线只有一条：反馈回到动作，还是回到假设。",
+"p":["我原来的假设写下来了","什么证据出现，我会承认这个假设错了","我没有在动作层不断加码"],
+"b":"永远在动作层加码——更努力、更频繁、更严格。假设错了，加码只是把错误放大。",
+"x":"写下你现在最确信的一个业务假设，以及能推翻它的证据。"},
+
+{"id":"t70","n":"执行意图 If-Then","d":"I","s":"Gollwitzer · S08",
+"q":"我给自己定的改变，写成了「如果【具体场景】，我就【具体动作】」，而不是「我要多……」。",
+"c":"目标意向说「我要多听团队意见」；执行意图说「如果周一早会有人说反对，我就先复述一遍再回应」。",
+"p":["If 那一半是具体场景，不是「有时间的时候」","Then 那一半是动作，不是态度","这个 If 一周至少出现三次"],
+"b":"「如果有空我就复盘」。永远没有空。含混词是执行意图的头号杀手。",
+"x":"把「我要多听意见」改写成一条 If-Then，写清场景和动作。"},
+
+{"id":"t71","n":"学习迁移三条件","d":"I","s":"S08",
+"q":"我讲完一件事，给了练习场景、我认这套做法、并有人告诉他做得对不对。",
+"c":"记住／泛化（换个场景还会用）／维持（三个月后还在用）。三类条件：机会（有没有场景练）／支持（上级认不认）／反馈（做对做错谁知道）。",
+"p":["他有真实场景可以练，不是只在课上练过","我自己做的时候，按新方法做","做对做错，有人告诉他，且不止一次"],
+"b":"把「讲过了」当「会了」，把「会了」当「用了」。发完材料就等结果，然后怪团队执行力。",
+"x":"给一个刚教的方法配三样：一个真实场景、一个认可的上级、一个反馈人。"},
+
+{"id":"t73","n":"微习惯配方","d":"I","s":"S08",
+"q":"我要养成的习惯，有触发场景、小到不会失败的动作，以及我做不到时谁接。",
+"c":"触发场景 ＋ 微动作（小到不可能失败）＋ 接棒条件。三样缺一，习惯活不过两周。",
+"p":["触发场景是每天必然发生的那件事（早会、关电脑）","微动作是两分钟级别，不是半小时","出差、生病、忙到爆的那天，有人接"],
+"b":"一上来就定「每天读书一小时」。第三天加班断一次，第五天又断，然后彻底放弃。",
+"x":"把「每天读书一小时」改成「关电脑后读一页」，并写上断掉时谁提醒你。"},
+
+{"id":"t74","n":"双轨证据（微习惯 × 业务结果）","d":"I","s":"S08",
+"q":"我分开记了「做了几次」和「结果变了多少」，没有混在一起下结论。",
+"c":"左轨查微习惯做没做（次数、连续性），右轨查业务结果（数、率、周期）。混在一起，就分不清是「没做」还是「做了没用」。",
+"p":["这个月做了几次、断在哪几天，我查得到","哪个数变了、变了多少，我说得出","两轨不一致时，我知道该下哪个结论"],
+"b":"业绩好就说「习惯有效」，业绩差就说「习惯没用」。中间那步「到底做了几次」从来没查过。",
+"x":"建两栏记录：本周做没做，本周哪个数动了。每周五行填一次。"}
+]
+;
+
+var DOMS = [
+  {k:'A', n:'自我与判断',   c:'S01–S02'},
+  {k:'B', n:'角色与转身',   c:'S03'},
+  {k:'C', n:'机制与造钟',   c:'S03'},
+  {k:'D', n:'授权与放手',   c:'S03 / S06'},
+  {k:'E', n:'找人与共事',   c:'S04'},
+  {k:'F', n:'团队真话',     c:'S05'},
+  {k:'G', n:'激励与教练',   c:'S06'},
+  {k:'H', n:'机制与人机',   c:'S07'},
+  {k:'I', n:'学习与修炼',   c:'S08'}
+];
+
+var VAL = ['完全没做','知道但没动','偶尔做','常做但不稳','基本稳定','已成本能'];
+var FULL = DATA.length * 5;
+var KEY_D = 'c11core.draft.v1', KEY_R = 'c11core.runs.v1';
+
+var state = {id:null, startedAt:0, a:{}, n:{}, k:[]};
+var runs = [];
+var byId = {};
+
+DATA.forEach(function(t){ byId[t.id] = t; });
+
+/* ---------- 工具函数 ---------- */
+function $(s,r){ return (r||document).querySelector(s); }
+function el(tag,cls,html){ var e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function pad(n){ return n<10?'0'+n:''+n; }
+function stamp(d){ d=d||new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function hhmm(d){ d=d||new Date(); return pad(d.getHours())+':'+pad(d.getMinutes()); }
+function fmtDT(iso){
+  if(!iso) return '';
+  var d=new Date(iso);
+  if(isNaN(d)) return String(iso).slice(0,16).replace('T',' ');
+  return d.getFullYear()+'.'+pad(d.getMonth()+1)+'.'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+function fmtD(iso){
+  if(!iso) return '';
+  var d=new Date(iso);
+  if(isNaN(d)) return String(iso).slice(0,10);
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+}
+function uid(){
+  var d=new Date();
+  var r=Math.random().toString(36).slice(2,6);
+  return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds())+'-'+r;
+}
+function toast(msg){
+  var t=$('#toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(t._tm); t._tm=setTimeout(function(){ t.classList.remove('on'); },1900);
+}
+function bandOf(avg){
+  if(avg>=4.5) return {k:'S',n:'造钟人', d:'你在与不在，一个样。'};
+  if(avg>=3.8) return {k:'A',n:'钟在走', d:'少数齿轮还需要上油。'};
+  if(avg>=3.0) return {k:'B',n:'半自动', d:'关键处仍然要你收口。'};
+  if(avg>=2.2) return {k:'C',n:'人扛着', d:'靠体力和情分在撑。'};
+  return {k:'D',n:'只有你', d:'公司只有一个大脑。'};
+}
+var BCOLOR = {S:'#241f19',A:'#2f5d57',B:'#a8853c',C:'#b5622f',D:'#8a3a26'};
+function scoreColor(v){ return ['#8a3a26','#a2482c','#b5622f','#a8853c','#4a7a63','#2f5d57'][v]; }
+
+/* ---------- 存储 ---------- */
+function saveDraft(){
+  try{ localStorage.setItem(KEY_D, JSON.stringify(state)); }catch(e){}
+  var s=$('#saved'); if(s) s.textContent='已保存 '+hhmm();
+}
+var saveTimer=null;
+function saveSoon(){ clearTimeout(saveTimer); saveTimer=setTimeout(saveDraft,260); }
+function loadAll(){
+  try{ runs = JSON.parse(localStorage.getItem(KEY_R)||'[]') || []; }catch(e){ runs=[]; }
+  try{
+    var d = JSON.parse(localStorage.getItem(KEY_D)||'null');
+    if(d && d.a){ state = d; }
+  }catch(e){}
+  if(!state.id) state.id = uid();
+}
+function saveRuns(){ try{ localStorage.setItem(KEY_R, JSON.stringify(runs)); }catch(e){} }
+
+/* ---------- 渲染列表 ---------- */
+function renderList(){
+  var box=$('#list'); box.innerHTML='';
+  DOMS.forEach(function(dm){
+    var items = DATA.filter(function(t){ return t.d===dm.k; });
+    if(!items.length) return;
+    var sec = el('section','dom'); sec.id='d'+dm.k;
+    sec.innerHTML =
+      '<div class="dh"><span class="dk">'+dm.k+'</span><h2>'+dm.n+'</h2>'+
+      '<span class="dc">'+dm.c+' · '+items.length+' 件</span>'+
+      '<span class="dn" data-dn="'+dm.k+'">0 / '+items.length+'</span></div>';
+    items.forEach(function(t){
+      var c = el('article','card'); c.dataset.id=t.id;
+      c.innerHTML =
+        '<div class="ch"><span class="cid">'+t.id.toUpperCase()+'</span><h3>'+esc(t.n)+'</h3>'+
+        '<span class="csrc">'+esc(t.s)+'</span>'+
+        '<button class="why" data-why="'+t.id+'" aria-label="查看知识点解释">?</button></div>'+
+        '<p class="cq">'+esc(t.q)+'</p>'+
+        '<div class="cr"><div class="scale" role="radiogroup" aria-label="打分">'+
+        [0,1,2,3,4,5].map(function(v){
+          return '<button type="button" data-id="'+t.id+'" data-v="'+v+'" aria-label="'+v+' 分 '+VAL[v]+'">'+v+'</button>';
+        }).join('')+
+        '</div><span class="cval" data-cv="'+t.id+'">未评</span>'+
+        '<button class="skip" data-skip="'+t.id+'">跳过</button></div>'+
+        '<div class="nw" data-nw="'+t.id+'"><button class="addnote" data-note="'+t.id+'">＋ 备注</button>'+
+        '<textarea data-ta="'+t.id+'" placeholder="记一句现场证据：具体是哪件事、哪一天"></textarea></div>';
+      sec.appendChild(c);
+    });
+    box.appendChild(sec);
+  });
+  // 回填
+  DATA.forEach(function(t){
+    if(state.a[t.id]!=null) paintCard(t.id, state.a[t.id]);
+    if(state.k.indexOf(t.id)>=0) paintSkip(t.id,true);
+  });
+  DATA.forEach(function(t){ if(state.n[t.id]) openNote(t.id, state.n[t.id]); });
+  updateProg();
+}
+
+function paintCard(id,v){
+  var card=$('.card[data-id="'+id+'"]'); if(!card) return;
+  card.dataset.s = v;
+  card.querySelectorAll('.scale button').forEach(function(b){
+    b.classList.toggle('on', +b.dataset.v===v);
+    b.setAttribute('aria-checked', +b.dataset.v===v ? 'true':'false');
+  });
+  var cv=card.querySelector('[data-cv]'); if(cv) cv.textContent = v+' · '+VAL[v];
+  var sk=card.querySelector('.skip'); if(sk) sk.classList.remove('on');
+}
+function paintSkip(id,on){
+  var card=$('.card[data-id="'+id+'"]'); if(!card) return;
+  var sk=card.querySelector('.skip'); if(sk) sk.classList.toggle('on',on);
+  if(on){
+    delete card.dataset.s;
+    card.querySelectorAll('.scale button').forEach(function(b){ b.classList.remove('on'); });
+    var cv=card.querySelector('[data-cv]'); if(cv) cv.textContent='已跳过';
+  }
+}
+function openNote(id,val){
+  var w=$('[data-nw="'+id+'"]'); if(!w) return;
+  w.classList.add('open');
+  var ta=w.querySelector('textarea');
+  ta.value = val!=null ? val : (state.n[id]||'');
+  w.querySelector('.addnote').textContent='收起备注';
+}
+function updateProg(){
+  var n=Object.keys(state.a).length;
+  $('#ptxt').textContent = n+' / '+DATA.length;
+  $('#pbar').style.width = (n/DATA.length*100)+'%';
+  $('#bmsg').textContent = '已答 '+n+' / '+DATA.length + (n? '，均分 '+(sumScore()/n).toFixed(2):'');
+  DOMS.forEach(function(dm){
+    var items=DATA.filter(function(t){return t.d===dm.k;});
+    var done=items.filter(function(t){return state.a[t.id]!=null;}).length;
+    var e=$('[data-dn="'+dm.k+'"]'); if(e) e.textContent=done+' / '+items.length;
+  });
+}
+function sumScore(){
+  var s=0; for(var k in state.a){ if(state.a[k]!=null) s+=state.a[k]; } return s;
+}
+
+/* ---------- 交互 ---------- */
+function setScore(id,v){
+  if(!state.startedAt) state.startedAt = Date.now();
+  state.a[id]=v;
+  var i=state.k.indexOf(id); if(i>=0) state.k.splice(i,1);
+  paintCard(id,v);
+  saveSoon(); updateProg();
+}
+function toggleSkip(id){
+  var i=state.k.indexOf(id);
+  if(i>=0){ state.k.splice(i,1); paintSkip(id,false); }
+  else{
+    state.k.push(id); delete state.a[id]; paintSkip(id,true);
+  }
+  saveSoon(); updateProg();
+}
+
+$('#list').addEventListener('click', function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  if(b.classList.contains('why')){ openSheet(b.dataset.why); return; }
+  if(b.dataset.id && b.dataset.v!=null){ setScore(b.dataset.id, +b.dataset.v); return; }
+  if(b.dataset.skip){ toggleSkip(b.dataset.skip); return; }
+  if(b.dataset.note){
+    var id=b.dataset.note, w=$('[data-nw="'+id+'"]');
+    if(w.classList.contains('open')){
+      w.classList.remove('open'); b.textContent='＋ 备注';
+      var ta=w.querySelector('textarea');
+      if(ta.value.trim()) state.n[id]=ta.value.trim(); else delete state.n[id];
+      saveSoon();
+    }else{ openNote(id); w.querySelector('textarea').focus(); }
+  }
+});
+$('#list').addEventListener('input', function(e){
+  var ta=e.target.closest('textarea'); if(!ta) return;
+  var id=ta.dataset.ta;
+  if(ta.value.trim()) state.n[id]=ta.value.trim(); else delete state.n[id];
+  saveSoon();
+});
+
+/* ---------- 知识点浮层 ---------- */
+var lastFocus=null;
+function openSheet(id){
+  var t=byId[id]; if(!t) return;
+  lastFocus=document.activeElement;
+  var dm=DOMS.filter(function(x){return x.k===t.d;})[0]||{n:''};
+  $('#sheetbox').innerHTML =
+    '<div class="sh"><div><span class="sid">'+t.id.toUpperCase()+' · '+esc(dm.n)+'</span>'+
+    '<h3>'+esc(t.n)+'</h3><span class="ssrc">'+esc(t.s)+'</span></div>'+
+    '<button class="x" id="sheetX" aria-label="关闭">✕</button></div>'+
+    '<div class="sb">'+
+    '<span class="lab">一句话</span><p class="core">'+esc(t.c)+'</p>'+
+    '<span class="lab">看这三条</span><ul>'+t.p.map(function(p){return '<li>'+esc(p)+'</li>';}).join('')+'</ul>'+
+    '<span class="lab">用坏的样子</span><div class="bad">'+esc(t.b)+'</div>'+
+    '<span class="lab">下一步</span><div class="nx">'+esc(t.x)+'</div>'+
+    '<p class="sf">打分的尺度：0 完全没做 · 3 常做但不稳 · 5 已成本能</p>'+
+    '</div>';
+  $('#sheet').classList.add('on');
+  document.body.style.overflow='hidden';
+  var btn=$('#sheetX'); if(btn) btn.focus();
+  var card=$('.card[data-id="'+id+'"] .why'); if(card) card.classList.add('seen');
+}
+function closeSheet(){
+  $('#sheet').classList.remove('on');
+  document.body.style.overflow='';
+  if(lastFocus && lastFocus.focus) lastFocus.focus();
+}
+$('#sheet').addEventListener('click', function(e){
+  if(e.target.id==='sheet'||e.target.id==='sheetX') closeSheet();
+});
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape'){
+    if($('#poster').classList.contains('on')) closePoster();
+    else if($('#sheet').classList.contains('on')) closeSheet();
+  }
+});
+
+/* ---------- 计算 ---------- */
+function buildRun(finished){
+  var answers={}, notes={}, answered=0, total=0;
+  DATA.forEach(function(t){
+    if(state.a[t.id]!=null){ answers[t.id]=state.a[t.id]; answered++; total+=state.a[t.id]; }
+    if(state.n[t.id]) notes[t.id]=state.n[t.id];
+  });
+  var avg = answered ? total/answered : 0;
+  var doms = DOMS.map(function(dm){
+    var items=DATA.filter(function(t){return t.d===dm.k;});
+    var got=0, an=0;
+    items.forEach(function(t){ if(answers[t.id]!=null){ got+=answers[t.id]; an++; } });
+    return {k:dm.k, n:dm.n, items:items.length, answered:an,
+            got:got, full:items.length*5, avg: an? +(got/an).toFixed(2):null};
+  });
+  var scored = DATA.filter(function(t){ return answers[t.id]!=null; })
+                   .map(function(t){ return {id:t.id, name:t.n, dom:t.d, score:answers[t.id]}; });
+  var sorted = scored.slice().sort(function(a,b){ return a.score-b.score; });
+  var weak = sorted.filter(function(x){ return x.score<=2; }).slice(0,3);
+  if(!weak.length) weak = sorted.filter(function(x){ return x.score<=3; }).slice(0,3);
+  var strong = scored.slice().sort(function(a,b){ return b.score-a.score; }).filter(function(x){return x.score>=4;}).slice(0,3);
+  var now = new Date();
+  var dur = state.startedAt ? Math.round((Date.now()-state.startedAt)/1000) : 0;
+  var b = bandOf(avg);
+  return {
+    id: state.id,
+    startedAt: state.startedAt ? new Date(state.startedAt).toISOString() : null,
+    finishedAt: finished ? now.toISOString() : null,
+    durationSec: dur,
+    answers: answers, notes: notes, skipped: state.k.slice(),
+    total: total, answered: answered, full: FULL,
+    avg: +avg.toFixed(2),
+    complete: +(answered/DATA.length).toFixed(3),
+    band: b.k, bandName: b.n, bandText: b.d,
+    doms: doms,
+    weakest: weak.map(function(x){ var t=byId[x.id]; return {id:x.id,name:x.name,score:x.score,next:t?t.x:''}; }),
+    strongest: strong.map(function(x){ return {id:x.id,name:x.name,score:x.score}; })
+  };
+}
+
+/* ---------- 结果页 ---------- */
+function showResult(run, opts){
+  opts = opts||{};
+  var r = $('#rbody');
+  var b = bandOf(run.avg);
+  var dateStr = fmtDT(run.finishedAt);
+  var mins = run.durationSec ? Math.max(1, Math.round(run.durationSec/60)) : 0;
+  var durStr = mins ? mins+' 分钟' : '不到 1 分钟';
+
+  var html = '';
+  html += '<div class="rdate">'+dateStr+' · 用时 '+durStr+' · 完成 '+
+          Math.round(run.complete*100)+'%</div>';
+
+  html += '<div class="grade">'+
+    '<div class="gscore"><div><b>'+run.avg.toFixed(2)+'</b><em>平均分</em></div><span>/ 5.00</span></div>'+
+    '<div class="gbadge"><div class="gl" style="background:'+BCOLOR[b.k]+'">'+b.k+'</div>'+
+    '<div class="gt"><b>'+b.n+'</b><span>'+b.d+'</span></div></div>'+
+    '<div class="gmeta">总分 '+run.total+' / '+run.full+'<br>已答 '+run.answered+' / '+DATA.length+
+    (run.skipped.length? '　跳过 '+run.skipped.length:'')+'</div>'+
+  '</div>';
+
+  if(run.complete<0.8){
+    html += '<div class="hchart" style="margin-bottom:6px;border-color:#e8d9b8;background:#fdf9ef">'+
+      '<span style="font-family:system-ui,sans-serif;font-size:12.5px;color:#8a6a2f">'+
+      '完成度 '+Math.round(run.complete*100)+'%，结论仅供参考。答满 80% 以上再看分档更准。</span></div>';
+  }
+
+  html += '<h3 class="rtitle">九个域 · 均分</h3><div>';
+  run.doms.forEach(function(d){
+    if(d.avg==null){ 
+      html += '<div class="drow2"><span class="dnm">'+d.k+' '+d.n+'</span>'+
+              '<span class="dbt"><i style="width:0"></i></span><span class="dvl">—</span></div>';
+      return;
+    }
+    var w = d.avg/5*100;
+    html += '<div class="drow2"><span class="dnm">'+d.k+' '+d.n+'</span>'+
+            '<span class="dbt"><i style="width:'+w+'%;background:'+scoreColor(Math.round(d.avg))+'"></i></span>'+
+            '<span class="dvl">'+d.avg.toFixed(1)+'</span></div>';
+  });
+  html += '</div>';
+
+  if(!run.weakest.length){
+    html += '<h3 class="rtitle">短板</h3><div class="hchart" style="font-size:13.5px;color:var(--ink2)">'+
+      '没有低于 4 分的项。这时候不必再补，重点转到维持：每季度复测一次，看分数有没有回落。</div>';
+  }
+  if(run.weakest.length){
+    html += '<h3 class="rtitle">先补这三件</h3><div class="wlist">';
+    run.weakest.forEach(function(w){
+      html += '<div class="witem" data-go="'+w.id+'"><span class="wsc" style="background:'+scoreColor(w.score)+'">'+w.score+'</span>'+
+        '<div class="wt"><b>'+esc(w.name)+'</b><p>'+esc(w.next||'')+'</p>'+
+        '<span class="wx">'+w.id.toUpperCase()+' · 点击回原题看知识点</span></div></div>';
+    });
+    html += '</div>';
+  }
+
+  if(run.strongest.length){
+    html += '<h3 class="rtitle">已经稳的</h3><div class="slist">';
+    run.strongest.forEach(function(s){
+      html += '<span class="s1">'+esc(s.name)+' · '+s.score+' 分</span>';
+    });
+    html += '</div>';
+  }
+
+  var weakTop = run.weakest.slice(0,2).map(function(w){ return w.name; }).join('、');
+  var wt = weakTop ? esc(weakTop) : '最弱的两件';
+  if(!run.weakest.length){
+    html += '<h3 class="rtitle">一句话结论</h3><div class="hchart" style="font-size:14.5px;line-height:1.9">'+
+      '你现在处在 <b>'+b.n+'</b>。没有明显短板，剩下的是维持：把这份结果存成基线，下季度用同一份题再测一次，只看有没有回落。'+
+      '</div>';
+  } else {
+  html += '<h3 class="rtitle">一句话结论</h3><div class="hchart" style="font-size:14.5px;line-height:1.9">'+
+    '你现在处在 <b>'+b.n+'</b>。'+
+    (run.avg>=3.8 ? '机制已经在替你承重。'+wt+'补上 1 分就够，别的不用动。' :
+     run.avg>=3.0 ? '骨架有了，关键处还要你收口。先动'+wt+'——把「靠你判断」改成「有标准的判断」，一件就够。' :
+     '这不是能力问题，是还没开始交棒。别全面改造，只从'+wt+'里挑一件：补条件、定层级、划兜底，跑满 30 天。')+
+    '</div>';
+  }
+
+  html += '<div class="acts2">'+
+    '<button class="k" id="btnPoster">生成海报</button>'+
+    '<button class="g" id="btnJson2">导出 JSON</button>'+
+    '<button id="btnCopy">复制文字版</button>'+
+    '<button id="btnEdit">返回修改</button>'+
+    '<button id="btnRestart">重新开始</button>'+
+  '</div>';
+
+  html += '<h3 class="rtitle">历史记录'+(runs.length?'（'+runs.length+' 次）':'')+'</h3>';
+  if(runs.length<2){
+    html += '<div class="hchart"><span style="font-family:system-ui,sans-serif;font-size:12.5px;color:var(--ink3)">'+
+      '再测一次就会出现趋势线。同一份数据可以导出 JSON，换设备、重装浏览器都不丢。</span></div>';
+  }else{
+    html += '<div class="hchart">'+sparkline(runs)+'</div>';
+  }
+  html += '<div class="hist">'+histRows(runs, run.id)+'</div>';
+
+  r.innerHTML = html;
+  $('#btnPoster').onclick = function(){ makePoster(run); };
+  $('#btnJson2').onclick = exportJSON;
+  $('#btnCopy').onclick = function(){ copyText(run); };
+  $('#btnEdit').onclick = function(){ show('main'); };
+  $('#btnRestart').onclick = restart;
+  r.onclick = function(e){
+    var it = e.target.closest ? e.target.closest('[data-go]') : null;
+    if(!it) return;
+    var id = it.getAttribute('data-go');
+    show('main');
+    var card = $('.card[data-id="'+id+'"]');
+    if(card){ card.scrollIntoView({block:'center'}); }
+    setTimeout(function(){ openSheet(id); }, 120);
+  };
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function histRows(list, curId){
+  var arr = list.slice().reverse();
+  return arr.map(function(r,i){
+    var prev = arr[i+1];
+    var diff = prev ? (r.avg-prev.avg) : null;
+    var b = bandOf(r.avg);
+    return '<div class="hrow"><span class="hd">'+fmtD(r.finishedAt)+'</span>'+
+      '<span class="hs">'+r.avg.toFixed(2)+'</span>'+
+      '<span class="hb" style="background:'+BCOLOR[b.k]+'">'+b.k+' '+b.n+'</span>'+
+      '<span class="ha">'+(diff==null?'首次':(diff>=0?'+':'')+diff.toFixed(2)+
+        '　'+r.answered+'/'+DATA.length+' 题')+(r.id===curId?'　← 本次':'')+'</span></div>';
+  }).join('');
+}
+
+function sparkline(list){
+  var arr = list.slice();
+  var W=600,H=110,pad=18;
+  var min=5,max=0;
+  arr.forEach(function(r){ if(r.avg<min)min=r.avg; if(r.avg>max)max=r.avg; });
+  if(max-min<0.5){ min=Math.max(0,min-0.4); max=Math.min(5,max+0.4); }
+  var n=arr.length;
+  var pts = arr.map(function(r,i){
+    var x = pad + (W-2*pad)*(n===1?0.5:i/(n-1));
+    var y = H-pad - (H-2*pad)*((r.avg-min)/(max-min||1));
+    return [x,y,r];
+  });
+  var d = pts.map(function(p,i){ return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1); }).join(' ');
+  var dots = pts.map(function(p){
+    var b=bandOf(p[2].avg);
+    return '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="4" fill="'+BCOLOR[b.k]+'"/>'+
+      '<text x="'+p[0].toFixed(1)+'" y="'+(p[1]-11).toFixed(1)+'" text-anchor="middle" font-size="10" fill="#958b7c" font-family="system-ui">'+p[2].avg.toFixed(1)+'</text>';
+  }).join('');
+  return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:132px;display:block">'+
+    '<line x1="'+pad+'" y1="'+(H-pad)+'" x2="'+(W-pad)+'" y2="'+(H-pad)+'" stroke="#eee7d9"/>'+
+    '<line x1="'+pad+'" y1="'+pad+'" x2="'+(W-pad)+'" y2="'+pad+'" stroke="#f2ece0" stroke-dasharray="3 4"/>'+
+    '<path d="'+d+'" fill="none" stroke="#2f5d57" stroke-width="1.6" opacity=".55"/>'+dots+'</svg>';
+}
+
+/* ---------- JSON ---------- */
+function exportJSON(){
+  var draft = Object.keys(state.a).length ? buildRun(false) : null;
+  var payload = {
+    app: 'c11-core-selfcheck',
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    meta: { title:'创业领导力 · 核心自检', items: DATA.length, scaleMax: 5, full: FULL, domains: DOMS },
+    runs: runs.slice().sort(function(a,b){ return (a.finishedAt||'').localeCompare(b.finishedAt||''); }),
+    draft: draft
+  };
+  var name = '创业领导力_核心自检_'+stamp()+'.json';
+  download(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}), name);
+  toast('已导出 JSON：'+(runs.length)+' 条完整记录');
+}
+function download(blob, name){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 800);
+}
+$('#btnJson').onclick = exportJSON;
+$('#btnImport').onclick = function(){ $('#fileIn').click(); };
+var bi2=$('#btnImport2'); if(bi2) bi2.onclick=function(){ $('#fileIn').click(); };
+$('#fileIn').onchange = function(e){
+  var f=e.target.files[0]; if(!f) return;
+  var fr=new FileReader();
+  fr.onload=function(){
+    try{
+      var d=JSON.parse(fr.result);
+      if(!d || (d.app && d.app!=='c11-core-selfcheck')) throw new Error('不是本工具导出的文件');
+      var incoming = d.runs || (d.avg!=null?[d]:[]);
+      if(!incoming.length) throw new Error('文件里没有记录');
+      var added=0;
+      incoming.forEach(function(r){
+        if(!r.id) r.id = uid();
+        var i=runs.findIndex(function(x){return x.id===r.id;});
+        if(i>=0){ runs[i]=r; } else { runs.push(r); added++; }
+      });
+      saveRuns();
+      if(d.draft && d.draft.answers && !Object.keys(state.a).length){
+        state = {id:d.draft.id||uid(), startedAt:d.draft.startedAt?new Date(d.draft.startedAt).getTime():Date.now(),
+                 a:d.draft.answers, n:d.draft.notes||{}, k:d.draft.skipped||[]};
+        saveDraft(); location.reload(); return;
+      }
+      toast('已导入 '+added+' 条记录');
+      var last = runs.slice().sort(function(a,b){return (a.finishedAt||'').localeCompare(b.finishedAt||'');}).pop();
+      if(last){ showResult(last); show('result'); }
+    }catch(err){ toast('导入失败：'+err.message); }
+  };
+  fr.readAsText(f);
+  e.target.value='';
+};
+
+/* ---------- 文字版 ---------- */
+function copyText(run){
+  var b=bandOf(run.avg);
+  var L=[];
+  L.push('创业领导力 · 核心自检');
+  L.push((run.finishedAt||'').slice(0,10)+'　'+run.answered+'/'+DATA.length+' 题');
+  L.push('平均分 '+run.avg.toFixed(2)+' / 5.00　总分 '+run.total+'/'+run.full);
+  L.push('评级 '+b.k+'　'+b.n+'　'+b.d);
+  L.push('');
+  L.push('九域均分：');
+  run.doms.forEach(function(d){ L.push('  '+d.k+' '+d.n+'　'+(d.avg==null?'—':d.avg.toFixed(1))); });
+  if(run.weakest.length){
+    L.push('');
+    L.push('先补这三件：');
+    run.weakest.forEach(function(w){ L.push('  '+w.score+' 分　'+w.name+'　'+w.next); });
+  }
+  var txt=L.join('\n');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ toast('文字版已复制'); },
+      function(){ fallbackCopy(txt); });
+  }else fallbackCopy(txt);
+}
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea'); ta.value=txt;
+  ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('文字版已复制'); }catch(e){ toast('复制失败，请手动选择'); }
+  ta.remove();
+}
+
+/* ---------- 海报 ---------- */
+function makePoster(run){
+  var W=1080, H=1380;
+  var c=document.createElement('canvas'); c.width=W; c.height=H;
+  var x=c.getContext('2d');
+  var SERIF='"Songti SC","Noto Serif CJK SC","Source Han Serif SC",serif';
+  var SANS='"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif';
+  var b=bandOf(run.avg);
+  var INK='#241f19', INK2='#57503f', INK3='#958b7c', LINE='#e0d8c8', PAPER='#fbf9f4';
+  var M=90, R=W-M;
+
+  x.fillStyle=PAPER; x.fillRect(0,0,W,H);
+  x.strokeStyle='#e8e1d2'; x.lineWidth=2; x.strokeRect(44,44,W-88,H-88);
+
+  /* 顶部 */
+  x.fillStyle=INK2; x.font='500 27px '+SANS;
+  x.fillText('创业领导力 · 核心自检', M, 126);
+  x.textAlign='right'; x.fillStyle=INK3; x.font='400 25px '+SANS;
+  x.fillText((run.finishedAt||'').slice(0,10).replace(/-/g,'.'), R, 126);
+  x.textAlign='left';
+  x.strokeStyle=LINE; x.lineWidth=1.5;
+  x.beginPath(); x.moveTo(M,152); x.lineTo(R,152); x.stroke();
+
+  /* 分数 */
+  var base=316;
+  x.fillStyle=INK; x.font='700 132px '+SERIF;
+  var sc=run.avg.toFixed(2);
+  x.fillText(sc, M-4, base);
+  var scw=x.measureText(sc).width;
+  x.fillStyle=INK3; x.font='400 30px '+SANS;
+  x.fillText('/ 5.00', M+scw+34, base-6);
+
+  x.fillStyle=INK3; x.font='400 23px '+SANS;
+  x.fillText('平均分', M, base+46);
+  x.fillText(run.answered+' / '+DATA.length+' 题 · 完成 '+Math.round(run.complete*100)+'%', M+98, base+46);
+
+  /* 等级块 + 称号（右缘对齐） */
+  var bw=150, bx=R-bw, by=base-bw-6;
+  x.fillStyle=BCOLOR[b.k]; x.fillRect(bx,by,bw,bw);
+  x.fillStyle='#fff'; x.font='700 86px '+SANS; x.textAlign='center';
+  x.fillText(b.k, bx+bw/2, by+bw*0.72);
+  x.textAlign='right';
+  x.fillStyle=INK; x.font='700 40px '+SERIF;
+  x.fillText(b.n, R, by+bw+56);
+  x.fillStyle=INK3; x.font='400 21px '+SANS;
+  x.fillText(b.d, R, by+bw+94);
+  x.textAlign='left';
+
+  /* 九域 */
+  var y=base+110;
+  x.strokeStyle='#eee7d9'; x.lineWidth=1;
+  x.beginPath(); x.moveTo(M,y); x.lineTo(R,y); x.stroke();
+  y+=52;
+  x.fillStyle=INK3; x.font='500 21px '+SANS;
+  x.fillText('九 个 域 · 均 分', M, y);
+  y-=8;
+
+  var barX=M+214, barW=R-70-barX;
+  run.doms.forEach(function(d){
+    y+=52;
+    x.fillStyle=INK2; x.font='400 25px '+SANS;
+    x.fillText(d.k+'  '+d.n, M, y);
+    x.fillStyle='#efe9db'; x.fillRect(barX, y-16, barW, 12);
+    x.strokeStyle='#e2d9c7'; x.lineWidth=1;
+    x.beginPath(); x.moveTo(barX+barW, y-17); x.lineTo(barX+barW, y-3); x.stroke();
+    if(d.avg!=null){
+      x.fillStyle=scoreColor(Math.round(d.avg));
+      x.fillRect(barX, y-16, barW*(d.avg/5), 12);
+      x.fillStyle=INK2; x.font='500 23px '+SANS; x.textAlign='right';
+      x.fillText(d.avg.toFixed(1), R, y-4);
+      x.textAlign='left';
+    }else{
+      x.fillStyle=INK3; x.font='400 23px '+SANS; x.textAlign='right';
+      x.fillText('—', R, y-4); x.textAlign='left';
+    }
+  });
+
+  /* 先补三件 */
+  y+=50;
+  x.strokeStyle=LINE; x.beginPath(); x.moveTo(M,y); x.lineTo(R,y); x.stroke();
+  y+=46;
+  x.fillStyle=INK3; x.font='500 21px '+SANS;
+  x.fillText(run.weakest.length?'先 补 这 三 件':'短 板', M, y);
+  y+=14;
+  if(!run.weakest.length){
+    y+=44;
+    x.fillStyle=INK2; x.font='400 26px '+SERIF;
+    x.fillText('没有低于 4 分的项，转去做维持。', M, y);
+  }
+  run.weakest.slice(0,3).forEach(function(w){
+    y+=48;
+    x.fillStyle=scoreColor(w.score);
+    x.beginPath(); x.arc(M+13, y-9, 13, 0, Math.PI*2); x.fill();
+    x.fillStyle='#fff'; x.font='700 17px '+SANS; x.textAlign='center';
+    x.fillText(w.score, M+13, y-2); x.textAlign='left';
+    x.fillStyle=INK; x.font='400 27px '+SERIF;
+    x.fillText(w.name, M+42, y);
+  });
+
+  /* 页脚 */
+  var fy=H-92;
+  x.strokeStyle='#eee7d9'; x.beginPath(); x.moveTo(M,fy-42); x.lineTo(R,fy-42); x.stroke();
+  x.fillStyle=INK3; x.font='400 21px '+SANS;
+  x.fillText(DATA.length+' 件核心工具 · '+run.full+' 分制 · 第 1—8 讲', M, fy);
+  x.textAlign='right';
+  x.fillStyle='#b8ac97'; x.font='600 23px '+SANS;
+  x.fillText('C11', R, fy);
+  x.textAlign='left';
+
+  var url;
+  try{ url=c.toDataURL('image/png'); }
+  catch(e){ toast('海报生成失败：'+e.message); return; }
+  var img=$('#pimg');
+  img.src=url;
+  $('#poster').classList.add('on');
+  document.body.style.overflow='hidden';
+  $('#poster')._run=run;
+}
+function closePoster(){
+  $('#poster').classList.remove('on');
+  document.body.style.overflow='';
+}
+$('#btnClosePoster').onclick = closePoster;
+$('#poster').addEventListener('click', function(e){ if(e.target.id==='poster') closePoster(); });
+$('#btnSavePng').onclick = function(){
+  var src=$('#pimg').src; if(!src) return;
+  var a=document.createElement('a');
+  var run=$('#poster')._run;
+  a.href=src; a.download='创业领导力_核心自检_'+(run? (run.finishedAt||'').slice(0,10):stamp())+'.png';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast('图片已保存');
+};
+
+/* ---------- 页面切换 ---------- */
+function show(id){
+  ['cover','main','result'].forEach(function(s){
+    var e=document.getElementById(s);
+    if(e) e.classList.toggle('on', s===id);
+  });
+  $('#botbar').style.display = (id==='main') ? 'flex' : 'none';
+  if(id!=='main') window.scrollTo({top:0});
+}
+function startNew(){
+  state={id:uid(), startedAt:Date.now(), a:{}, n:{}, k:[]};
+  saveDraft(); renderList(); show('main');
+  window.scrollTo({top:0});
+}
+function restart(){
+  if(!confirm('重新开始会清空本次作答（历史记录保留）。确定？')) return;
+  localStorage.removeItem(KEY_D);
+  startNew();
+}
+
+$('#btnStart').onclick = function(){
+  if(Object.keys(state.a).length){
+    if(!confirm('确定清空本次作答、从头开始？历史记录会保留。')) return;
+  }
+  startNew();
+};
+$('#btnResume').onclick = function(){ renderList(); show('main'); };
+$('#btnResult').onclick = finish;
+$('#btnFinish').onclick = finish;
+$('#btnNext').onclick = function(){
+  var rest = DATA.filter(function(t){ return state.a[t.id]==null; });
+  if(!rest.length){ toast('38 道都答完了，可以看结果'); return; }
+  var card = $('.card[data-id="'+rest[0].id+'"]');
+  if(card){
+    card.scrollIntoView({block:'center',behavior:'smooth'});
+    card.style.outline='2px solid #b5622f';
+    setTimeout(function(){ card.style.outline=''; },1400);
+  }
+};
+
+function finish(){
+  var answered=Object.keys(state.a).length;
+  if(answered<6){ toast('至少答 6 题才能出结果（现在 '+answered+' 题）'); return; }
+  var run=buildRun(true);
+  var i=runs.findIndex(function(r){ return r.id===run.id; });
+  if(i>=0) runs[i]=run; else runs.push(run);
+  saveRuns();
+  showResult(run);
+  show('result');
+}
+
+/* ---------- 启动 ---------- */
+loadAll();
+renderList();
+(function initCover(){
+  var n=Object.keys(state.a).length;
+  if(n){
+    var b=$('#btnResume');
+    b.hidden=false;
+    b.textContent='继续上次（已答 '+n+' / '+DATA.length+'）';
+    $('#btnStart').textContent='重新开始';
+    $('#saved').textContent='已保存 '+hhmm();
+    $('#ptxt').textContent=n+' / '+DATA.length;
+    $('#pbar').style.width=(n/DATA.length*100)+'%';
+  }
+})();
+window.addEventListener('beforeunload', saveDraft);
+
+})();
+
+</script>
+</body>
+</html>
