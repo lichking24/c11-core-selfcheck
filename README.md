@@ -60,7 +60,9 @@ var SUPA_KEY = 'eyJhbGciOi...';
 - 每张表都开了 RLS（`auth.uid() = user_id`），并 revoke 掉 anon 权限，别人拿到 anon key 也只能读到自己的行
 - 未完成草稿也会同步：新设备登录后自动出现「继续上次（已答 n / 38）」
 
-**邮箱验证额度**：Supabase 免费版内置发信服务每小时限制很少，给同学用之前建议在 **Authentication → Emails → SMTP Settings** 配自己的发信服务（Resend / Brevo 都有免费额度），否则会出现"注册了但收不到验证邮件"。
+**建议关闭邮箱验证**：默认 Supabase 要求注册后去邮箱点确认链接，而免费版发信额度每小时只有几封，人多就集体卡住。这个工具不需要邮箱真实性，所以建议直接在 **Authentication → Sign In / Providers → Email** 里把 **Confirm email** 关掉——注册完立刻可用，不受发信额度限制。
+
+关掉之后**忘记密码功能会静默失败**（改密码要走邮件），所以页面上的「忘记密码」实际不可靠。密码真的忘了，去 Supabase 控制台 → Authentication → Users 里直接改。
 
 ## 部署
 

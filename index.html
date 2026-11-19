@@ -1552,8 +1552,10 @@ function apiSignUp(email, pw){
   }, SUPA_KEY).then(function(d){
     if(d && d.access_token){
       sessSave(d); AUTH.user = d.user; AUTH.email = (d.user&&d.user.email)||email;
+      return d;
     }
-    return d;
+    // 项目若仍开着邮箱确认，signup 不返回 token —— 直接用密码再登录一次
+    return apiSignIn(email, pw).catch(function(){ return d; });
   });
 }
 function apiRefresh(rt){
@@ -1776,7 +1778,7 @@ function renderAuth(){
       '<input type="password" id="aPw" autocomplete="current-password" placeholder="至少 6 位">' +
       '<p class="msg" id="aMsg"></p>' +
       '<div class="btns"><button class="primary" id="aGo">登录</button><button id="aReg">注册</button></div>' +
-      '<p class="hint">第一次用点「注册」。注册后可能要去邮箱点确认链接，回来再登录。</p>' +
+      '<p class="hint">第一次用点「注册」，填完邮箱密码即刻可用，不用收邮件。</p>' +
       '<p class="hint"><button class="lnk" id="aForgot">忘记密码</button></p>';
     var msg = $('#aMsg');
     function err(m){ msg.className='msg err'; msg.textContent = m; }
@@ -1804,7 +1806,7 @@ function renderAuth(){
           closeAuth(); toast('注册成功，正在同步'); return syncNow(false);
         }
         msg.className = 'msg ok';
-        msg.textContent = '注册成功。请去邮箱点确认链接，然后回来登录。';
+        msg.textContent = '注册成功。若项目仍开启邮箱确认，请去邮箱点链接后再登录。';
       }).catch(function(e){ err(authErrMsg(e)); }).then(function(){ busy(false); });
     };
     $('#aForgot').onclick = function(){
