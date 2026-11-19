@@ -331,8 +331,58 @@ p{margin:0}
   background:none;border:none;border-bottom:1px dotted var(--line);cursor:pointer;padding:0 0 2px;letter-spacing:.03em;
 }
 .linklike:hover{color:var(--teal);border-color:var(--teal)}
+
+/* ---------- 账号与云同步 ---------- */
+#btnAcct{display:inline-flex;align-items:center;gap:6px}
+#btnAcct .dot{width:6px;height:6px;border-radius:50%;background:#c9c0b1;display:inline-block;flex:0 0 auto}
+#btnAcct.on .dot{background:#2f5d57}
+#btnAcct.err .dot{background:#8a3a26}
+#btnAcct.busy .dot{background:#a8853c;animation:bpulse 1s infinite}
+@keyframes bpulse{50%{opacity:.3}}
+#auth{
+  position:fixed;inset:0;z-index:90;display:none;background:rgba(35,28,18,.58);
+  backdrop-filter:blur(3px);padding:clamp(16px,4vw,48px);overflow-y:auto;
+}
+#auth.on{display:flex;align-items:flex-start;justify-content:center}
+.abox{
+  width:100%;max-width:420px;background:#fff;border-radius:4px;margin:auto 0;
+  box-shadow:0 24px 80px -20px rgba(30,20,5,.5);animation:pop .22s ease;
+}
+.ah{padding:22px 24px 15px;border-bottom:1px solid var(--line2);position:relative}
+.ah h3{font-size:19px;margin:0 0 5px;padding-right:34px}
+.ah p{margin:0;font-family:system-ui,sans-serif;font-size:12px;color:var(--ink3);line-height:1.65}
+.ah .x{
+  position:absolute;right:12px;top:12px;width:28px;height:28px;border:1px solid var(--line);
+  background:#fff;border-radius:2px;cursor:pointer;font-size:14px;color:var(--ink3);line-height:1;padding:0;
+}
+.ab{padding:18px 24px 22px}
+.ab label{display:block;font-family:system-ui,sans-serif;font-size:10.5px;letter-spacing:.14em;color:var(--ink3);margin:0 0 6px}
+.ab input{
+  width:100%;box-sizing:border-box;padding:10px 11px;border:1px solid var(--line);background:#fdfcf9;
+  font-size:14px;font-family:inherit;color:var(--ink);border-radius:2px;margin:0 0 14px;
+}
+.ab input:focus{outline:none;border-color:var(--teal);background:#fff}
+.ab button{
+  padding:10px 16px;border:1px solid var(--line);background:#fff;color:var(--ink2);
+  border-radius:3px;cursor:pointer;font-size:13px;letter-spacing:.03em;transition:.15s;
+}
+.ab button:hover{border-color:var(--accent);color:var(--accent)}
+.ab button.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+.ab button.primary:hover{background:#264c47;color:#fff}
+.ab button[disabled]{opacity:.5;cursor:default}
+.ab .msg{font-family:system-ui,sans-serif;font-size:12px;line-height:1.65;margin:0 0 14px;padding:9px 11px;border-radius:2px;display:none}
+.ab .msg.err{display:block;background:#fbeee9;color:#8a3a26;border-left:2px solid #8a3a26}
+.ab .msg.ok{display:block;background:#eef4f1;color:#2f5d57;border-left:2px solid #2f5d57}
+.ab .who{font-family:system-ui,sans-serif;font-size:13px;color:var(--ink);margin:0 0 6px;word-break:break-all}
+.ab .stat{font-family:system-ui,sans-serif;font-size:12px;color:var(--ink3);line-height:1.75;margin:0 0 4px}
+.ab .lnk{background:none;border:none;padding:0;font-family:system-ui,sans-serif;font-size:12px;color:var(--teal);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.ab .btns{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.ab .btns button{flex:1;min-width:110px}
+.ab .hint{font-family:system-ui,sans-serif;font-size:11px;color:var(--ink3);line-height:1.75;margin:14px 0 0}
+.ab .hint b{color:var(--ink2);font-weight:500}
+
 @media print{
-  #top,.botbar,.cvbtns,#sheet,#poster,#toast{display:none!important}
+  #top,.botbar,.cvbtns,#sheet,#poster,#toast,#auth{display:none!important}
   body{background:#fff}
   .screen{display:block!important}
 }
@@ -347,6 +397,7 @@ p{margin:0}
     <span class="saved" id="saved">未开始</span>
     <button id="btnJson">导出 JSON</button>
     <button id="btnImport">导入</button>
+    <button id="btnAcct" title="账号与云同步"><i class="dot"></i><span id="acctTxt">登录</span></button>
     <button id="btnResult" class="primary">看结果</button>
   </div>
 </header>
@@ -439,6 +490,19 @@ p{margin:0}
 </div>
 
 <div id="toast"></div>
+
+<!-- 账号浮层 -->
+<div id="auth">
+  <div class="abox">
+    <div class="ah">
+      <h3 id="authTitle">登录 · 同步历史</h3>
+      <p id="authSub">登录后自检记录跟着账号走，换手机、换电脑都在。</p>
+      <button class="x" id="btnAuthClose" aria-label="关闭">×</button>
+    </div>
+    <div class="ab" id="authBody"></div>
+  </div>
+</div>
+
 <input type="file" id="fileIn" accept="application/json,.json" hidden>
 
 <script>
@@ -730,6 +794,16 @@ var VAL = ['完全没做','知道但没动','偶尔做','常做但不稳','基�
 var FULL = DATA.length * 5;
 var KEY_D = 'c11core.draft.v1', KEY_R = 'c11core.runs.v1';
 
+/* ============================================================
+   Supabase 配置 —— 部署前替换这两行即可
+   URL：Supabase 控制台 → Project Settings → Data API → Project URL
+   KEY：同一页 → API Keys → anon / public
+   留空则整个云同步功能自动隐藏，工具按纯本地模式运行。
+   ============================================================ */
+var SUPA_URL = '';
+var SUPA_KEY = '';
+var KEY_AUTH = 'c11core.auth.v1';
+
 var state = {id:null, startedAt:0, a:{}, n:{}, k:[]};
 var runs = [];
 var byId = {};
@@ -778,6 +852,7 @@ function scoreColor(v){ return ['#8a3a26','#a2482c','#b5622f','#a8853c','#4a7a63
 function saveDraft(){
   try{ localStorage.setItem(KEY_D, JSON.stringify(state)); }catch(e){}
   var s=$('#saved'); if(s) s.textContent='已保存 '+hhmm();
+  cloudDraftSoon();
 }
 var saveTimer=null;
 function saveSoon(){ clearTimeout(saveTimer); saveTimer=setTimeout(saveDraft,260); }
@@ -1402,8 +1477,420 @@ function finish(){
   var i=runs.findIndex(function(r){ return r.id===run.id; });
   if(i>=0) runs[i]=run; else runs.push(run);
   saveRuns();
+  cloudPushRun(run);
   showResult(run);
   show('result');
+}
+
+/* ============================================================
+   云同步（Supabase REST，不依赖 SDK）
+   ============================================================ */
+var KEY_OUT = 'c11core.outbox.v1';
+var AUTH = { session:null, user:null, email:null, syncing:false, lastSync:0 };
+var draftTimer = null;
+
+function supaOn(){ return !!(SUPA_URL && SUPA_KEY); }
+
+/* ---- 会话存取 ---- */
+function sessLoad(){
+  try{
+    var s = JSON.parse(localStorage.getItem(KEY_AUTH)||'null');
+    if(s && s.access_token) AUTH.session = s;
+  }catch(e){ AUTH.session = null; }
+}
+function sessSave(s){
+  s._exp = Date.now() + ((s.expires_in||3600) * 1000);
+  AUTH.session = s;
+  try{ localStorage.setItem(KEY_AUTH, JSON.stringify(s)); }catch(e){}
+}
+function sessClear(){
+  AUTH.session = null; AUTH.user = null; AUTH.email = null;
+  try{ localStorage.removeItem(KEY_AUTH); }catch(e){}
+}
+
+/* ---- 底层请求 ---- */
+function supaFetch(url, init, token){
+  var h = { 'apikey': SUPA_KEY, 'Content-Type':'application/json' };
+  if(token) h['Authorization'] = 'Bearer ' + token;
+  if(init.headers) for(var k in init.headers) h[k] = init.headers[k];
+  init.headers = h;
+  return fetch(url, init).then(function(r){
+    var ct = r.headers.get('content-type')||'';
+    var job = ct.indexOf('json') >= 0 ? r.json() : r.text();
+    return job.catch(function(){ return null; }).then(function(data){
+      if(!r.ok){
+        var m = (data && (data.msg || data.message || data.error_description || data.error)) || ('HTTP '+r.status);
+        var err = new Error(m); err.status = r.status; err.data = data; throw err;
+      }
+      return data;
+    });
+  });
+}
+function supa(path, opts){
+  opts = opts || {};
+  var base = SUPA_URL.replace(/\/+$/, '');
+  var tok = (AUTH.session && AUTH.session.access_token) || SUPA_KEY;
+  return supaFetch(base + path, {
+    method: opts.method || 'GET',
+    body: opts.body===undefined ? undefined : JSON.stringify(opts.body),
+    headers: opts.headers
+  }, tok);
+}
+
+/* ---- 认证 ---- */
+function apiSignIn(email, pw){
+  return supaFetch(SUPA_URL.replace(/\/+$/,'') + '/auth/v1/token?grant_type=password', {
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email:email, password:pw})
+  }, SUPA_KEY).then(function(d){
+    sessSave(d); AUTH.user = d.user; AUTH.email = (d.user&&d.user.email)||email;
+    return d;
+  });
+}
+function apiSignUp(email, pw){
+  return supaFetch(SUPA_URL.replace(/\/+$/,'') + '/auth/v1/signup', {
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email:email, password:pw})
+  }, SUPA_KEY).then(function(d){
+    if(d && d.access_token){
+      sessSave(d); AUTH.user = d.user; AUTH.email = (d.user&&d.user.email)||email;
+    }
+    return d;
+  });
+}
+function apiRefresh(rt){
+  return supaFetch(SUPA_URL.replace(/\/+$/,'') + '/auth/v1/token?grant_type=refresh_token', {
+    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({refresh_token:rt})
+  }, SUPA_KEY).then(function(d){
+    // 刷新响应可能不带 user，沿用旧的
+    if(!d.user && AUTH.user) d.user = AUTH.user;
+    sessSave(d);
+    if(d.user){ AUTH.user = d.user; AUTH.email = d.user.email || AUTH.email; }
+    return d;
+  });
+}
+function ensureFresh(){
+  var s = AUTH.session;
+  if(!s) return Promise.reject(new Error('未登录'));
+  if(s._exp && Date.now() > s._exp - 90000 && s.refresh_token){
+    return apiRefresh(s.refresh_token);
+  }
+  return Promise.resolve(s);
+}
+
+/* ---- 待补推送队列 ---- */
+function outLoad(){ try{ return JSON.parse(localStorage.getItem(KEY_OUT)||'[]')||[]; }catch(e){ return []; } }
+function outSave(a){ try{ localStorage.setItem(KEY_OUT, JSON.stringify(a)); }catch(e){} }
+function outAdd(row){
+  var q = outLoad();
+  q = q.filter(function(x){ return x.run_id !== row.run_id; });
+  q.push(row); if(q.length > 50) q = q.slice(-50);
+  outSave(q);
+}
+
+/* ---- 记录映射 ---- */
+function runToRow(run){
+  return {
+    user_id: AUTH.user.id,
+    run_id: run.id,
+    taken_at: run.finishedAt || new Date().toISOString(),
+    avg: run.avg,
+    grade: run.band,
+    total: run.total,
+    payload: run
+  };
+}
+function apiPullRuns(){
+  return supa('/rest/v1/runs?select=run_id,taken_at,payload&order=taken_at.desc&limit=500', {});
+}
+function apiPushRuns(rows){
+  if(!rows.length) return Promise.resolve(null);
+  return supa('/rest/v1/runs?on_conflict=user_id,run_id', {
+    method:'POST',
+    headers:{ 'Prefer':'resolution=merge-duplicates,return=minimal' },
+    body: rows
+  });
+}
+function apiPullDraft(){ return supa('/rest/v1/drafts?select=payload,updated_at', {}); }
+function apiPushDraft(){
+  return supa('/rest/v1/drafts?on_conflict=user_id', {
+    method:'POST',
+    headers:{ 'Prefer':'resolution=merge-duplicates,return=minimal' },
+    body: [{ user_id: AUTH.user.id, payload: state }]
+  });
+}
+
+/* ---- 合并 ---- */
+function mergeRuns(remote){
+  var map = {}; runs.forEach(function(r){ map[r.id] = r; });
+  var added = 0;
+  (remote||[]).forEach(function(row){
+    var p = (row && row.payload) ? row.payload : null;
+    if(!p || !p.id) return;
+    if(!map[p.id]){ map[p.id] = p; added++; }
+    else{
+      var a = String(p.finishedAt||''), b = String(map[p.id].finishedAt||'');
+      if(a > b) map[p.id] = p;
+    }
+  });
+  runs = Object.keys(map).map(function(k){ return map[k]; })
+          .sort(function(x,y){ return String(y.finishedAt||'').localeCompare(String(x.finishedAt||'')); });
+  saveRuns();
+  return added;
+}
+function applyRemoteDraft(p){
+  if(!p || !p.a || !Object.keys(p.a).length) return false;
+  if(Object.keys(state.a).length) return false;          // 本地有作答，以本地为准
+  var keep = state.id;
+  state = p;
+  if(!state.id) state.id = keep || uid();
+  saveDraftQuiet();
+  renderList();
+  var n = Object.keys(state.a).length;
+  var b = $('#btnResume'); if(b){ b.hidden = false; b.textContent = '继续上次（已答 '+n+' / '+DATA.length+'）'; }
+  var bs = $('#btnStart'); if(bs) bs.textContent = '重新开始';
+  var pt = $('#ptxt'); if(pt) pt.textContent = n + ' / ' + DATA.length;
+  var pb = $('#pbar'); if(pb) pb.style.width = (n/DATA.length*100) + '%';
+  return true;
+}
+function saveDraftQuiet(){ try{ localStorage.setItem(KEY_D, JSON.stringify(state)); }catch(e){} }
+
+/* ---- 同步主流程 ---- */
+function syncNow(quiet){
+  if(!supaOn() || !AUTH.session || !AUTH.user) return Promise.resolve(0);
+  if(AUTH.syncing) return Promise.resolve(0);
+  AUTH.syncing = true;
+  setAcct('busy', '同步中');
+  return ensureFresh()
+    .then(function(){
+      // 1) 先补推离线队列
+      var q = outLoad();
+      var pre = q.length ? apiPushRuns(q) : Promise.resolve();
+      return pre.then(function(){ if(q.length) outSave([]); });
+    })
+    .then(function(){
+      // 2) 本地全量上云（幂等）
+      return apiPushRuns(runs.map(runToRow));
+    })
+    .then(function(){
+      // 3) 拉云端，合并
+      return Promise.all([apiPullRuns(), apiPullDraft()]);
+    })
+    .then(function(res){
+      var added = mergeRuns(res[0] || []);
+      var gotDraft = applyRemoteDraft(res[1] && res[1][0] ? res[1][0].payload : null);
+      AUTH.lastSync = Date.now();
+      setAcct('on', shortEmail());
+      AUTH.syncing = false;
+      if(!quiet){
+        var bits = [];
+        if(added) bits.push('云端 +'+added+' 轮');
+        if(gotDraft) bits.push('已恢复未完成进度');
+        toast(bits.length ? bits.join(' · ') : '已是最新');
+      }
+      if(added) refreshHistoryIfVisible();
+      return added;
+    })
+    .catch(function(e){
+      AUTH.syncing = false;
+      if(e && (e.status === 401 || e.status === 403)){
+        sessClear(); setAcct('', '登录');
+        if(!quiet) toast('登录已过期，请重新登录');
+      }else{
+        setAcct('err', '离线');
+        if(!quiet) toast('同步失败：' + authErrMsg(e) + '（本地数据没丢）');
+      }
+      return 0;
+    });
+}
+function cloudPushRun(run){
+  if(!supaOn() || !AUTH.session || !AUTH.user) return;
+  ensureFresh().then(function(){
+    return apiPushRuns([runToRow(run)]);
+  }).then(function(){
+    AUTH.lastSync = Date.now(); setAcct('on', shortEmail());
+  }).catch(function(e){
+    var row = runToRow(run); row.user_id = null;   // 队列里不存 uid，补推时重填
+    outAdd(row);
+    setAcct('err', '待同步');
+  });
+}
+function cloudDraftSoon(){
+  if(!supaOn() || !AUTH.session || !AUTH.user) return;
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(function(){
+    ensureFresh().then(function(){ return apiPushDraft(); }).catch(function(){});
+  }, 2500);
+}
+function refreshHistoryIfVisible(){
+  var r = $('#result');
+  if(r && r.classList.contains('on') && runs.length){ showResult(runs[0]); }
+}
+
+/* ---- 账号 UI ---- */
+function shortEmail(){
+  var e = AUTH.email || '';
+  return e ? e.split('@')[0].slice(0,12) : '已同步';
+}
+function setAcct(st, txt){
+  var b = $('#btnAcct'); if(!b) return;
+  b.classList.toggle('on', st==='on');
+  b.classList.toggle('busy', st==='busy');
+  b.classList.toggle('err', st==='err');
+  var t = $('#acctTxt');
+  if(t) t.textContent = txt || (st==='on' ? shortEmail() : '登录');
+}
+function authErrMsg(e){
+  var m = (e && e.message) || '';
+  if(/Invalid login credentials/i.test(m)) return '邮箱或密码不对';
+  if(/Email not confirmed/i.test(m)) return '邮箱还没确认，先去邮箱点一下链接';
+  if(/already registered|already been registered/i.test(m)) return '这个邮箱已经注册过，直接登录';
+  if(/Password should be at least|password.*too short/i.test(m)) return '密码太短，至少 6 位';
+  if(/rate limit|too many|For security purposes/i.test(m)) return '操作太频繁，等一会儿再试';
+  if(/Failed to fetch|NetworkError|Load failed|network/i.test(m)) return '连不上服务器，检查网络';
+  if(/duplicate key/i.test(m)) return '记录已存在';
+  return m || '出错了，请重试';
+}
+function openAuth(){
+  $('#auth').classList.add('on');
+  renderAuth();
+}
+function closeAuth(){ $('#auth').classList.remove('on'); }
+
+function renderAuth(){
+  var T = $('#authTitle'), S = $('#authSub'), B = $('#authBody');
+  if(!supaOn()){
+    T.textContent = '云同步未配置';
+    S.textContent = '这个版本只在本机保存数据。';
+    B.innerHTML = '<p class="stat">要开启多设备同步，需要先在 <b>supabase.com</b> 建一个项目，把 schema.sql 跑一遍，' +
+      '再把 Project URL 和 anon public key 填进 index.html 顶部的 <code>SUPA_URL</code> / <code>SUPA_KEY</code>。</p>' +
+      '<div class="btns"><button id="aClose2">知道了</button></div>';
+    $('#aClose2').onclick = closeAuth;
+    return;
+  }
+  if(!AUTH.session){
+    T.textContent = '登录 · 同步历史';
+    S.textContent = '登录后自检记录跟着账号走，换手机、换电脑都在。';
+    B.innerHTML =
+      '<label for="aEmail">邮箱</label>' +
+      '<input type="email" id="aEmail" autocomplete="username" placeholder="you@example.com">' +
+      '<label for="aPw">密码</label>' +
+      '<input type="password" id="aPw" autocomplete="current-password" placeholder="至少 6 位">' +
+      '<p class="msg" id="aMsg"></p>' +
+      '<div class="btns"><button class="primary" id="aGo">登录</button><button id="aReg">注册</button></div>' +
+      '<p class="hint">第一次用点「注册」。注册后可能要去邮箱点确认链接，回来再登录。</p>' +
+      '<p class="hint"><button class="lnk" id="aForgot">忘记密码</button></p>';
+    var msg = $('#aMsg');
+    function err(m){ msg.className='msg err'; msg.textContent = m; }
+    function busy(on){ $('#aGo').disabled = on; $('#aReg').disabled = on; }
+    function creds(){
+      var em = ($('#aEmail').value||'').trim(), pw = $('#aPw').value||'';
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ err('邮箱格式不太对'); return null; }
+      if(pw.length < 6){ err('密码至少 6 位'); return null; }
+      return {em:em, pw:pw};
+    }
+    $('#aGo').onclick = function(){
+      var c = creds(); if(!c) return;
+      busy(true); msg.className='msg';
+      apiSignIn(c.em, c.pw).then(function(){
+        closeAuth();
+        toast('已登录，正在同步');
+        return syncNow(false);
+      }).catch(function(e){ err(authErrMsg(e)); }).then(function(){ busy(false); });
+    };
+    $('#aReg').onclick = function(){
+      var c = creds(); if(!c) return;
+      busy(true); msg.className='msg';
+      apiSignUp(c.em, c.pw).then(function(d){
+        if(d && d.access_token){
+          closeAuth(); toast('注册成功，正在同步'); return syncNow(false);
+        }
+        msg.className = 'msg ok';
+        msg.textContent = '注册成功。请去邮箱点确认链接，然后回来登录。';
+      }).catch(function(e){ err(authErrMsg(e)); }).then(function(){ busy(false); });
+    };
+    $('#aForgot').onclick = function(){
+      var em = ($('#aEmail').value||'').trim();
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ err('先填邮箱，再点忘记密码'); return; }
+      if(!apiRecover(em)) return;
+      msg.className = 'msg ok';
+      msg.textContent = '重置邮件已发出，去邮箱点链接（可能进垃圾箱）。';
+    };
+    return;
+  }
+  T.textContent = '已登录';
+  S.textContent = '你的数据只在这个账号下，别人看不到。';
+  B.innerHTML =
+    '<p class="who">' + esc(AUTH.email || '') + '</p>' +
+    '<p class="stat" id="aStat">' + (AUTH.lastSync ? '上次同步 ' + hhmm(new Date(AUTH.lastSync)) : '尚未同步') + '</p>' +
+    '<div class="btns"><button class="primary" id="aSync">立即同步</button><button id="aOut">退出登录</button></div>' +
+    '<p class="hint">本地始终保留一份完整数据。断网也能答题，联网后自动补推。</p>';
+  $('#aSync').onclick = function(){ syncNow(false); };
+  $('#aOut').onclick = function(){
+    if(!confirm('退出后本机数据仍然保留，云端不会删除。确定退出？')) return;
+    var s = AUTH.session;
+    sessClear(); setAcct('', '登录'); closeAuth();
+    if(s && s.access_token){
+      supaFetch(SUPA_URL.replace(/\/+$/,'') + '/auth/v1/logout', {method:'POST', headers:{'Content-Type':'application/json'}}, s.access_token).catch(function(){});
+    }
+    toast('已退出登录');
+  };
+}
+function apiRecover(email){
+  return supaFetch(SUPA_URL.replace(/\/+$/,'') + '/auth/v1/recover', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email: email, redirect_to: location.origin + location.pathname })
+  }, SUPA_KEY).catch(function(e){
+    var m = authErrMsg(e);
+    var msg = $('#aMsg'); if(msg){ msg.className='msg err'; msg.textContent = m; }
+    return null;
+  });
+}
+
+/* ---- 邮件链接回调（#access_token=...&type=recovery） ---- */
+function handleAuthHash(){
+  var h = (location.hash||'').replace(/^#/, '');
+  if(!h || h.indexOf('access_token') < 0) return false;
+  var q = {};
+  h.split('&').forEach(function(kv){
+    var i = kv.indexOf('='); if(i < 0) return;
+    q[kv.slice(0,i)] = decodeURIComponent(kv.slice(i+1).replace(/\+/g,' '));
+  });
+  if(!q.access_token) return false;
+  sessSave({ access_token:q.access_token, refresh_token:q.refresh_token,
+             expires_in: +q.expires_in || 3600, user:null });
+  history.replaceState(null, '', location.pathname + location.search);
+  supa('/auth/v1/user').then(function(u){
+    AUTH.user = u; AUTH.email = u.email; AUTH.session.user = u;
+    sessSave(AUTH.session); setAcct('busy','同步中');
+    return syncNow(true);
+  }).then(function(){
+    setAcct('on', shortEmail()); openAuth(); toast('登录成功，已同步');
+  }).catch(function(){ setAcct('','登录'); });
+  return true;
+}
+
+/* ---- 初始化 ---- */
+function cloudInit(){
+  if(!supaOn()){
+    var b = $('#btnAcct'); if(b) b.style.display = 'none';
+    return;
+  }
+  sessLoad();
+  if(AUTH.session && AUTH.session.user){
+    AUTH.user = AUTH.session.user;
+    AUTH.email = AUTH.user.email || '';
+  }
+  handleAuthHash();
+  if(AUTH.session){
+    setAcct('busy', '同步中');
+    ensureFresh().then(function(){ return syncNow(true); })
+      .catch(function(e){
+        if(e && (e.status===401||e.status===403)){ sessClear(); setAcct('', '登录'); }
+        else setAcct('err', '离线');
+      });
+  }else{
+    setAcct('', '登录');
+  }
 }
 
 /* ---------- 启动 ---------- */
@@ -1422,6 +1909,20 @@ renderList();
   }
 })();
 window.addEventListener('beforeunload', saveDraft);
+
+/* 账号入口 */
+(function initAuthUI(){
+  var b = $('#btnAcct');
+  if(b) b.onclick = openAuth;
+  var c = $('#btnAuthClose');
+  if(c) c.onclick = closeAuth;
+  var ov = $('#auth');
+  if(ov) ov.addEventListener('click', function(e){ if(e.target === ov) closeAuth(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && ov && ov.classList.contains('on')) closeAuth();
+  });
+  cloudInit();
+})();
 
 })();
 

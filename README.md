@@ -31,9 +31,36 @@
 
 ## 数据说明
 
-数据只存在浏览器 `localStorage`（键 `c11core.runs.v1`），不上传任何服务器。换浏览器、换域名、清缓存都会丢——**长期跟踪请定期导出 JSON**。
+数据默认只存在浏览器 `localStorage`（键 `c11core.runs.v1`），不上传任何服务器。换浏览器、换域名、清缓存都会丢——**长期跟踪请定期导出 JSON**。
 
 从本地文件迁移到本页：在旧页面导出 JSON，在本页「导入」即可，历史记录会合并。
+
+## 多设备同步（可选，需自建 Supabase）
+
+登录后记录跟着邮箱账号走，换手机、换电脑都能接上。**不登录也能用**——本地始终是主库，云端只是备份。
+
+配置三步：
+
+1. 在 [supabase.com](https://supabase.com) 建一个免费项目
+2. 打开 **SQL Editor**，把 `supabase/schema.sql` 全文粘贴执行
+3. 把 **Project Settings → Data API** 的 Project URL 和 **API Keys → anon public** 填进 `index.html` 顶部的两行：
+
+```js
+var SUPA_URL = 'https://xxxxxxxx.supabase.co';
+var SUPA_KEY = 'eyJhbGciOi...';
+```
+
+两行为空时，登录入口自动隐藏，工具按纯本地模式运行——所以不配也不影响使用。
+
+**实现要点**
+
+- 不用 SDK，直接打 REST 接口，保持单文件零依赖
+- 离线优先：答题先写 localStorage，登录态下防抖 2.5 秒再推云端；推送失败进本地待补队列，下次联网自动补
+- 同步用 `on_conflict=user_id,run_id` 幂等 upsert，两端同时开着也不会长出重复记录
+- 每张表都开了 RLS（`auth.uid() = user_id`），并 revoke 掉 anon 权限，别人拿到 anon key 也只能读到自己的行
+- 未完成草稿也会同步：新设备登录后自动出现「继续上次（已答 n / 38）」
+
+**邮箱验证额度**：Supabase 免费版内置发信服务每小时限制很少，给同学用之前建议在 **Authentication → Emails → SMTP Settings** 配自己的发信服务（Resend / Brevo 都有免费额度），否则会出现"注册了但收不到验证邮件"。
 
 ## 部署
 
